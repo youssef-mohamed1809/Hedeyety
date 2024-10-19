@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
 
-class NavBar extends StatefulWidget {
+class NavBar extends StatelessWidget {
   int current_page = 0;
   NavBar({super.key, required this.current_page});
 
-  @override
-  State<NavBar> createState() => _NavBarState();
-}
-
-class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -19,7 +14,7 @@ class _NavBarState extends State<NavBar> {
       unselectedItemColor: Colors.white.withOpacity(.60),
       selectedFontSize: 14,
       unselectedFontSize: 14,
-      currentIndex: widget.current_page,
+      currentIndex: current_page,
       onTap: (value) {
         // Respond to item press.
         print(value);
@@ -27,14 +22,18 @@ class _NavBarState extends State<NavBar> {
       items: [
         BottomNavigationBarItem(
           label: 'Home',
-          icon: Icon(Icons.home),
+          icon: IconButton(icon: Icon(Icons.home), onPressed: (){
+            Navigator.pushReplacementNamed(context, "/");
+          },),
         ),
         BottomNavigationBarItem(
-          label: 'Events',
-          icon: Icon(Icons.calendar_month),
+          label: 'My Events',
+          icon: IconButton(icon: Icon(Icons.calendar_month), onPressed: (){
+            Navigator.pushReplacementNamed(context, "/myevents");
+          },),
         ),
         BottomNavigationBarItem(
-          label: 'Gifts',
+          label: ' Pledged Gifts',
           icon: Icon(Icons.card_giftcard),
         ),
         BottomNavigationBarItem(

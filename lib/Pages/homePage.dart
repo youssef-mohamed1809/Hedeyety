@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/FriendCard.dart';
+import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,21 +9,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-              child: IconButton(onPressed: (){}, icon: Icon(Icons.search)),
-            )
-          ],
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(width: 50, height: 50, child: Image.asset("Assets/Images/hedeyety_logo.png")),
-              const Text("Hedeyety")
-            ],
-
-          ),
+        appBar: CustomAppBar(
+          button: IconButton(onPressed: (){}, icon: Icon(Icons.search))
         ),
         body: Container(
           margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),

@@ -20,7 +20,12 @@ class FriendCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name, style: const TextStyle(fontSize: 20),),
+            Row(
+              children: [
+                Icon(Icons.person),
+                Text(name, style: const TextStyle(fontSize: 20),),
+              ],
+            ),
             upcoming_events == 0
                 ? const Text("No upcoming events")
                 : Text("Upcoming Events: $upcoming_events"),
