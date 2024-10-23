@@ -18,12 +18,13 @@ class HomePage extends StatelessWidget {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
+                ElevatedButton(onPressed: (){}, child: Text("Pledged Gifts")),
                 FriendCard(name: "Youssef", upcoming_events: 0),
                 FriendCard(name: "Juliana", upcoming_events: 3),
                 FriendCard(name: "Seif", upcoming_events: 1),
                 FriendCard(name: "Omar", upcoming_events: 2),
                 FriendCard(name: "Donia", upcoming_events: 0),
-                FriendCard(name: "Yehia", upcoming_events: 1),
+                FriendCard(name: "Yehia", upcoming_events: 0),
                 FriendCard(name: "Mohamed", upcoming_events: 2),
                 FriendCard(name: "Mahmoud", upcoming_events: 0),
               ],

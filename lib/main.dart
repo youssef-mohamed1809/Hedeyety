@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Pages/giftsPage.dart';
 import 'package:hedeyety/Pages/homePage.dart';
-import 'package:hedeyety/Pages/myEvents.dart';
+import 'package:hedeyety/Pages/myEventsPage.dart';
 
 
 void main() {
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/myevents': (context) => MyEvents()
+        '/myevents': (context) => MyEvents(),
+        '/mygifts': (context) => GiftsPage()
       },
     );
   }

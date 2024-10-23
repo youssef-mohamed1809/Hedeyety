@@ -17,29 +17,30 @@ class NavBar extends StatelessWidget {
       currentIndex: current_page,
       onTap: (value) {
         // Respond to item press.
-        print(value);
+        if(value == 0){
+          Navigator.pushReplacementNamed(context, "/");
+        }else if(value == 1){
+          Navigator.pushReplacementNamed(context, "/myevents");
+        }else if(value == 2){
+          Navigator.pushReplacementNamed(context, '/mygifts');
+        }
       },
       items: [
         BottomNavigationBarItem(
           label: 'Home',
-          icon: IconButton(icon: Icon(Icons.home), onPressed: (){
-            Navigator.pushReplacementNamed(context, "/");
-          },),
-        ),
+          icon: IconButton(icon: Icon(Icons.home), onPressed: (){Navigator.pushReplacementNamed(context, "/");},),),
         BottomNavigationBarItem(
           label: 'My Events',
-          icon: IconButton(icon: Icon(Icons.calendar_month), onPressed: (){
-            Navigator.pushReplacementNamed(context, "/myevents");
-          },),
+          icon: IconButton(icon: Icon(Icons.calendar_month), onPressed: (){Navigator.pushReplacementNamed(context, "/myevents");},),
         ),
         BottomNavigationBarItem(
-          label: ' Pledged Gifts',
-          icon: Icon(Icons.card_giftcard),
-        ),
+          label: 'Gifts',
+          icon: IconButton(icon: Icon(Icons.card_giftcard), onPressed: (){Navigator.pushReplacementNamed(context, '/mygifts');}),),
         BottomNavigationBarItem(
           label: 'Profile',
-          icon: Icon(Icons.person),
+          icon: IconButton(icon: Icon(Icons.person), onPressed: (){},),
         ),
+
       ],
     );
   }
