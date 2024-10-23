@@ -55,7 +55,7 @@ class MyGiftsCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextButton(
-                      onPressed: (status==2)?null:() {},
+                      onPressed: (status>=1)?null:() {},
                       child: Text("Edit", textAlign: TextAlign.center), // Centering the button
                     ),
                   ),
