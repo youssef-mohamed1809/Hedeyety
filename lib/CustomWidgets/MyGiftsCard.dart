@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 
 //pledged => 1, blue
 //unpledged =>0,  red
@@ -8,8 +9,9 @@ class MyGiftsCard extends StatelessWidget {
   int status = 0;
   String name = "";
   String event = "";
+  String description = "";
 
-  MyGiftsCard({super.key, required this.status, required this.name, this.event = ""});
+  MyGiftsCard({super.key, required this.status, required this.name, this.event = "", this.description = ""});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,9 @@ class MyGiftsCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage(gift_name: name, gift_description: description)));
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -23,6 +23,8 @@ class NavBar extends StatelessWidget {
           Navigator.pushReplacementNamed(context, "/myevents");
         }else if(value == 2){
           Navigator.pushReplacementNamed(context, '/mygifts');
+        }else if(value == 3){
+          Navigator.pushReplacementNamed(context, '/myprofile');
         }
       },
       items: [
@@ -34,11 +36,11 @@ class NavBar extends StatelessWidget {
           icon: IconButton(icon: Icon(Icons.calendar_month), onPressed: (){Navigator.pushReplacementNamed(context, "/myevents");},),
         ),
         BottomNavigationBarItem(
-          label: 'Gifts',
+          label: 'Wishlist',
           icon: IconButton(icon: Icon(Icons.card_giftcard), onPressed: (){Navigator.pushReplacementNamed(context, '/mygifts');}),),
         BottomNavigationBarItem(
           label: 'Profile',
-          icon: IconButton(icon: Icon(Icons.person), onPressed: (){},),
+          icon: IconButton(icon: Icon(Icons.person), onPressed: (){Navigator.pushReplacementNamed(context, '/myprofile');},),
         ),
 
       ],

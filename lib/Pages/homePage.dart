@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/FriendCard.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
+import 'package:hedeyety/FriendSearchDelegate.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+  List<String> myFriends = ["Youssef", "Yehia", "Juliana", "Donia", "Omar", "Mariam", "Ahmed"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBar(
-          button: IconButton(onPressed: (){}, icon: Icon(Icons.search))
+          button: IconButton(onPressed: (){
+            showSearch(context: context, delegate: FriendSearchDelegate(myFriends: myFriends));
+          }, icon: Icon(Icons.search))
         ),
         body: Container(
           margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
