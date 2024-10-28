@@ -8,29 +8,30 @@ class FriendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          alignment: Alignment.centerLeft
-        ),
-        onPressed: (){
-          print(name);
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.person),
-                Text(name, style: const TextStyle(fontSize: 20),),
-              ],
-            ),
-            upcoming_events == 0
-                ? const Text("No upcoming events")
-                : Text("Upcoming Events: $upcoming_events"),
-            SizedBox(height: 20,)
-          ],
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: SizedBox(
+        child: TextButton(
+          style: TextButton.styleFrom(
+            alignment: Alignment.centerLeft
+          ),
+          onPressed: (){
+            print(name);
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.person),
+                  Text(name, style: const TextStyle(fontSize: 20),),
+                ],
+              ),
+              upcoming_events == 0
+                  ? const Text("No upcoming events")
+                  : Text("Upcoming Events: $upcoming_events"),
+            ],
+          ),
         ),
       ),
     );

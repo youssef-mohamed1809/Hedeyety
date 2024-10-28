@@ -17,17 +17,12 @@ class MyGiftsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),  // Add some padding for better spacing
-      // decoration: BoxDecoration(
-      //   border: Border.all(color: Colors.grey, width: 2), // Define border color and width
-      //   borderRadius: BorderRadius.circular(10), // Rounded corners for the border
-      // ),
       child: Column(
         children: [
           SizedBox(
-            width: double.infinity,
             child: TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage(gift_name: name, gift_description: description)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

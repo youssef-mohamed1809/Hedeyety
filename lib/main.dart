@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
 import 'package:hedeyety/Pages/homePage.dart';
 import 'package:hedeyety/Pages/myEventsPage.dart';

@@ -4,9 +4,7 @@ import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import '../CustomWidgets/CustomAppBar.dart';
 
 class GiftDetailsPage extends StatelessWidget {
-  String gift_name = "";
-  String gift_description = "";
-  GiftDetailsPage({super.key, required this.gift_name, required this.gift_description});
+  GiftDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +19,9 @@ class GiftDetailsPage extends StatelessWidget {
                 children: [
                   CircleAvatar(radius: 70,),
                   SizedBox(height: 20,),
-                  Text(gift_name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                  Text("Great Dane", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
                   SizedBox(height: 20),
-                  Text(gift_description, style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17))
+                  Text("I want a Great Dane puppy", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17))
                 ],
               ),
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Pages/eventDetailsPage.dart';
 
 class EventCard extends StatelessWidget {
   String event_name = "";
@@ -7,13 +8,13 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
+    return Card(
       child: TextButton(
         style: TextButton.styleFrom(
             alignment: Alignment.centerLeft
         ),
         onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailsPage(event_id: 0,)));
           print("Events");
         },
         child: Column(

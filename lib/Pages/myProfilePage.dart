@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
+import 'package:hedeyety/Pages/pledgedGiftsPage.dart';
 
 
 class MyProfilePage extends StatelessWidget {
@@ -24,8 +25,9 @@ class MyProfilePage extends StatelessWidget {
                   Text("Youssef")
                 ],
               ),
+              TextButton(onPressed: (){}, child: Text("Edit Profile")),
               TextButton(onPressed: (){}, child: Text("Events")),
-              TextButton(onPressed: (){}, child: Text("Pledged Gifts"))
+              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PledgedGiftsPage()));}, child: Text("Pledged Gifts"))
             ],
           )
         ),
