@@ -18,13 +18,10 @@ class MyProfilePage extends StatelessWidget {
           width: double.infinity,
           child: Column(
             children: [
-              Row(
-                children: [
-                  Icon(Icons.person, size: 100,),
-                  // SizedBox(width: 50),
-                  Text("Youssef")
-                ],
-              ),
+              CircleAvatar(radius: 70),
+              SizedBox(height: 30),
+              Text("Youssef"),
+              Divider(),
               TextButton(onPressed: (){}, child: Text("Edit Profile")),
               TextButton(onPressed: (){}, child: Text("Events")),
               TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PledgedGiftsPage()));}, child: Text("Pledged Gifts"))
