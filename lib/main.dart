@@ -4,9 +4,25 @@ import 'package:hedeyety/Pages/homePage.dart';
 import 'package:hedeyety/Pages/myEventsPage.dart';
 import 'package:hedeyety/Pages/myProfilePage.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() {
+  testFire();
   runApp(const MyApp());
+}
+
+Future<void> testFire() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  final ref = FirebaseDatabase.instance.ref();
+  final userId = 1;
+  final snapshot = await ref.child('users/username').get();
+  if (snapshot.exists) {
+    print(snapshot.value);
+  } else {
+    print('No data available.');
+  }
 }
 
 class MyApp extends StatelessWidget {

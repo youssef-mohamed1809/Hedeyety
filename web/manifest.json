@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "This is a gift list management application made for the CSE431 course.",
+    "description": "A gift list management application.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
