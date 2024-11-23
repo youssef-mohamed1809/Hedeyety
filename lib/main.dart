@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Pages/loginPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
 import 'package:hedeyety/Pages/homePage.dart';
 import 'package:hedeyety/Pages/myEventsPage.dart';
@@ -17,7 +18,7 @@ Future<void> testFire() async{
   await Firebase.initializeApp();
   final ref = FirebaseDatabase.instance.ref();
   final userId = 1;
-  final snapshot = await ref.child('users/username').get();
+  final snapshot = await ref.child('username').get();
   if (snapshot.exists) {
     print(snapshot.value);
   } else {
@@ -34,9 +35,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hedeyety',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
         '/': (context) => HomePage(),
+        '/login': (context) => LoginPage(),
         '/myevents': (context) => MyEvents(),
         '/mygifts': (context) => GiftsPage(),
         '/myprofile': (context) => MyProfilePage(),
