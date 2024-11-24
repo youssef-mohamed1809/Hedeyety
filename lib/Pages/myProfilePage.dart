@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/Pages/pledgedGiftsPage.dart';
+import 'package:hedeyety/UserModel.dart';
 
 
 class MyProfilePage extends StatelessWidget {
@@ -16,20 +18,68 @@ class MyProfilePage extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         child: SizedBox(
           width: double.infinity,
-          child: Column(
-            children: [
-              CircleAvatar(radius: 70),
-              SizedBox(height: 30),
-              Text("Youssef"),
-              Divider(),
-              TextButton(onPressed: (){}, child: Text("Edit Profile")),
-              TextButton(onPressed: (){}, child: Text("Events")),
-              TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PledgedGiftsPage()));}, child: Text("Pledged Gifts"))
-            ],
-          )
+          child: UserDetails()
         ),
       ),
       bottomNavigationBar: NavBar(current_page: 3,),
     );
   }
 }
+
+
+
+class UserDetails extends StatefulWidget {
+  UserDetails({super.key});
+
+  UserModel? user;
+
+
+
+  @override
+  State<UserDetails> createState() => _UserDetailsState();
+}
+
+class _UserDetailsState extends State<UserDetails> {
+  Future<UserModel> loadUserData() async {
+
+    // await UserModel.get_id_by_username();
+    return await UserModel.getCurrentUserData();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: loadUserData(),
+        builder: (BuildContext, snapshot){
+          if(snapshot.hasData){
+            UserModel data = snapshot.data as UserModel;
+            
+            return Column(
+              children: [
+                CircleAvatar(radius: 70),
+                SizedBox(height: 30),
+                Text(data.name),
+                Divider(),
+                TextButton(onPressed: (){}, child: Text("Edit Profile")),
+                TextButton(onPressed: (){}, child: Text("Events")),
+                TextButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PledgedGiftsPage()));}, child: Text("Pledged Gifts")),
+                TextButton(onPressed: () async {
+                  await Authentication.logout();
+                  Navigator.pushReplacementNamed(context, '/');
+                }, child: Text("Log out"))
+              ],
+            );
+          }else if(snapshot.hasError){
+            print(snapshot.error);
+            return Center(child: Text("An Error has Occurred"));
+          }else{
+            return CircularProgressIndicator();
+          }
+        });
+  }
+}
+
+
+
+

@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/FriendCard.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/FriendSearchDelegate.dart';
 import 'package:hedeyety/Pages/pledgedGiftsPage.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -23,6 +26,9 @@ class HomePage extends StatelessWidget {
             child: Column(
               children: [
                 ElevatedButton(onPressed: (){
+
+
+
                   Navigator.push(context, MaterialPageRoute(builder: (context) => PledgedGiftsPage()));
                 }, child: Text("Pledged Gifts")),
                 FriendCard(name: "Ahmed", upcoming_events: 3),

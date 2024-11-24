@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedeyety/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   GlobalKey<FormState> _key = GlobalKey();
 
+  TextEditingController name_controller = TextEditingController();
+  TextEditingController username_controller = TextEditingController();
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Welcome!",
+              "Creat a new account",
               style: TextStyle(fontSize: 30),
               textAlign: TextAlign.center,
             ),
@@ -38,6 +40,30 @@ class _LoginPageState extends State<LoginPage> {
               key: _key,
               child: Column(
                 children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "Name",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    controller: name_controller,
+                    validator: (name) {},
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "Username",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                    controller: username_controller,
+                    validator: (name) {},
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextFormField(
                     decoration: InputDecoration(
                       hintText: "Email",
@@ -64,23 +90,21 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                       onPressed: () async {
                         if (_key.currentState!.validate()) {
-                          bool res = await Authentication.login(
-                              email_controller.text, password_controller.text);
+                          bool res = await Authentication.signup(
+                              name_controller.text, username_controller.text, email_controller.text, password_controller.text);
                           if (res == true) {
-                            Navigator.pushReplacementNamed(context, '/home');
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                '/home', (Route<dynamic> route) => false);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Login Failed")));
+                                SnackBar(content: Text("Signup Failed")));
                           }
                         }
                       },
-                      child: Text("Login"))
+                      child: Text("Sign up"))
                 ],
               ),
             ),
-            TextButton(onPressed: (){
-              Navigator.pushNamed(context, '/signup');
-            }, child: Text("Don't have an account? Sign up here"))
           ],
         ),
       ),
