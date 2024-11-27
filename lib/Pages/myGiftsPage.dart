@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
 import 'package:hedeyety/CustomWidgets/MyGiftsCard.dart';
 
 import '../CustomWidgets/BottomNavBar.dart';
@@ -28,6 +29,7 @@ class GiftsPage extends StatelessWidget {
             ),
           )
       ),
+      floatingActionButton: CustomFAB(),
       bottomNavigationBar: NavBar(current_page: 2)
     );
   }

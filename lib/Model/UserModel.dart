@@ -4,6 +4,8 @@ import 'RTdb.dart';
 
 class UserModel{
 
+  static String? current_user;
+
   String uid;
   DateTime created_at;
   String email;
@@ -96,15 +98,17 @@ class UserModel{
   }
 
   static getCurrentUserUID() {
-    User? user = FirebaseAuth.instance.currentUser;
+    if(current_user == null){
+      User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      String uid = user.uid;  // Get the UID of the current user
-      // print("User UID: $uid");
-      return uid;
+      if (user != null) {
+         current_user = user.uid;
+      }else{
+        return false;
+      }
     }
-    // print("No user is logged in.");
-    return false;
+
+    return current_user;
   }
 
   static getCurrentUserData() async {
@@ -147,5 +151,31 @@ class UserModel{
   }
 
 
+  static getNameByID(id) async{
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child("users/$id/name");
+    try{
+      var snapshot = await ref.get();
+      // print(snapshot.value);
+      return snapshot.value;
+    }catch(e){
+      print(e);
+    }
+  }
+
+  static Future<List> getMyFriendsIDs() async{
+    var db = RealTimeDatabase.getInstance();
+    var id = getCurrentUserUID();
+    var ref = db.ref().child("users/$id/friends");
+    try{
+      var snapshot = await ref.get();
+      var data = snapshot.value;
+      // print(data.keys.toList());
+      return data.keys.toList();
+    }catch(e){
+      print(e);
+      return [];
+    }
+  }
 
 }

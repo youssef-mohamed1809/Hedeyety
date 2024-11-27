@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
 import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
@@ -16,12 +17,10 @@ class MyProfilePage extends StatelessWidget {
       appBar: CustomAppBar(button: null),
       body: Padding(
         padding: const EdgeInsets.all(0),
-        child: SizedBox(
-          width: double.infinity,
-          child: UserDetails()
-        ),
+        child: Center(child: UserDetails()),
       ),
       bottomNavigationBar: NavBar(current_page: 3,),
+      floatingActionButton: CustomFAB(),
     );
   }
 }

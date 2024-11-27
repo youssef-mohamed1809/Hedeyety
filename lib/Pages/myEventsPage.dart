@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
+import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
 import 'package:hedeyety/CustomWidgets/EventCard.dart';
 
 class MyEvents extends StatelessWidget {
@@ -24,10 +25,7 @@ class MyEvents extends StatelessWidget {
             ),
           )
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {  },
-          child: const Icon(Icons.add)
-      ),
+      floatingActionButton: CustomFAB(),
       bottomNavigationBar: NavBar(current_page: 1)
     );
   }
