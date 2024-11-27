@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:hedeyety/RTdb.dart';
+import 'RTdb.dart';
 
 class UserModel{
 
@@ -27,27 +27,46 @@ class UserModel{
 
     var event = await ref.child("/users").orderByChild("username").equalTo(username).once();
 
-    final data = event.snapshot.data;
+    final data = event.snapshot.value;
+
+    print(data);
 
     if(data != null) {
       Map x = event.snapshot.value;
+      // print(x.keys.first);
       return x.keys.first;
     }else{
       return -1;
     }
   }
 
-  Future<bool> add_friend(username) async {
 
-    var friend_id = get_id_by_username(username);
+  static Future<bool> add_friend(friend_username) async{
+
+    var user_id = getCurrentUserUID();
+    var friend_id =  await get_id_by_username(friend_username);
+
+    if(friend_id == false){
+      return false;
+    }
+
+    var res = await _add_a_friend(user_id, friend_id);
+    if(!res){
+      return res;
+    }
+    res = await _add_a_friend(friend_id, user_id);
+    return res;
+
+  }
+
+  static Future<bool> _add_a_friend(user_id, friend_id) async {
 
     if (friend_id != -1){
       var db = RealTimeDatabase.getInstance();
 
-      var ref = db.ref().child("users/$uid/friends");
+      var ref = db.ref().child("users/$user_id/friends");
 
       try{
-        print("hi");
         var snapshot = await ref.get();
 
         if(snapshot.exists){
@@ -68,7 +87,7 @@ class UserModel{
 
         return true;
       }catch(e){
-        print(e);
+        // print(e);
         return false;
       }
     }
@@ -81,10 +100,10 @@ class UserModel{
 
     if (user != null) {
       String uid = user.uid;  // Get the UID of the current user
-      print("User UID: $uid");
+      // print("User UID: $uid");
       return uid;
     }
-    print("No user is logged in.");
+    // print("No user is logged in.");
     return false;
   }
 
@@ -108,7 +127,7 @@ class UserModel{
       return UserModel(uid: uid, created_at: DateTime.parse(data['createdAt']), email: data['email'], photo: data['profilePicture'], username: data['username'], name: data['name']);
 
     }else{
-      print("ello");
+      // print("ello");
     }
   }
 

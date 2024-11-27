@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
+import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
 import 'package:hedeyety/CustomWidgets/FriendCard.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/FriendSearchDelegate.dart';
@@ -42,10 +43,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(Icons.add)
-        ),
+        floatingActionButton: CustomFAB(),
         bottomNavigationBar: NavBar(current_page: 0)
     );
   }

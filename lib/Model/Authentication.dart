@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import'package:firebase_database/firebase_database.dart';
-import 'package:hedeyety/RTdb.dart';
-import 'package:hedeyety/UserModel.dart';
+import 'RTdb.dart';
+import 'UserModel.dart';
 
 class Authentication{
 

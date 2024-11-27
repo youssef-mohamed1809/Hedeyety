@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hedeyety/Authentication.dart';
+import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/Pages/pledgedGiftsPage.dart';
-import 'package:hedeyety/UserModel.dart';
+import 'package:hedeyety/Model/UserModel.dart';
 
 
 class MyProfilePage extends StatelessWidget {

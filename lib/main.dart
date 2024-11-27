@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hedeyety/Authentication.dart';
+import 'package:hedeyety/Model/Authentication.dart';
+import 'package:hedeyety/Model/Event.dart';
 import 'package:hedeyety/Pages/loginPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
 import 'package:hedeyety/Pages/homePage.dart';
 import 'package:hedeyety/Pages/myEventsPage.dart';
 import 'package:hedeyety/Pages/myProfilePage.dart';
-
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hedeyety/Pages/signupPage.dart';
@@ -13,8 +15,14 @@ import 'package:hedeyety/Pages/signupPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await Event.getAllEvents();
+  // await Event.createEvent("name", "date", "location", "description");
   runApp(const MyApp());
 }
+
+
+
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
