@@ -3,9 +3,21 @@ import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
 import 'package:hedeyety/CustomWidgets/EventCard.dart';
+import 'package:hedeyety/Model/Event.dart';
 
-class MyEvents extends StatelessWidget {
+class MyEvents extends StatefulWidget {
   const MyEvents({super.key});
+
+  @override
+  State<MyEvents> createState() => _MyEventsState();
+}
+
+class _MyEventsState extends State<MyEvents> {
+  Future getEvents() async {
+    var events = await Event.getAllEvents();
+    print(events);
+    return events;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +27,29 @@ class MyEvents extends StatelessWidget {
       ),
       body: Container(
           margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                EventCard(event_name: "Birthday", date: "18/9/2024",),
-                EventCard(event_name: "Graduation Ceremony", date: "30/9/2025"),
-              ],
-            ),
+          child: FutureBuilder(
+              future: getEvents(),
+              builder: (context, snapshot){
+                if(snapshot.hasData){
+                  List data = snapshot.data;
+                  print(data);
+                  if(data.isEmpty){
+                    return Center(child: Text("You hav no events yet."));
+                  }else{
+                  return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext, index){
+                              return EventCard(event: data[index]);
+                      }
+                  );
+                  }
+                }else if(snapshot.hasError){
+                  print(snapshot.error);
+                  return Center(child: Text("An error has occured"),);
+                }else{
+                return Center(child: CircularProgressIndicator(),);
+                }
+              }
           )
       ),
       floatingActionButton: CustomFAB(),

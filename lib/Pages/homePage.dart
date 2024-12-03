@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
@@ -7,9 +6,6 @@ import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/FriendSearchDelegate.dart';
 import 'package:hedeyety/Model/Event.dart';
 import 'package:hedeyety/Model/UserModel.dart';
-import 'package:hedeyety/Pages/pledgedGiftsPage.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -61,7 +57,7 @@ class HomePage extends StatelessWidget {
                     }else if(snapshot.hasError){
                       return Center(child: Text("An rror has Occurred"));
                     }else{
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     }
                   }),
             ),

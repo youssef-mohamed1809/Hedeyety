@@ -4,8 +4,6 @@ import 'RTdb.dart';
 
 class UserModel{
 
-  static String? current_user;
-
   String uid;
   DateTime created_at;
   String email;
@@ -35,7 +33,6 @@ class UserModel{
 
     if(data != null) {
       Map x = event.snapshot.value;
-      // print(x.keys.first);
       return x.keys.first;
     }else{
       return -1;
@@ -98,38 +95,25 @@ class UserModel{
   }
 
   static getCurrentUserUID() {
-    if(current_user == null){
       User? user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-         current_user = user.uid;
+         return user.uid;
+
       }else{
         return false;
       }
-    }
-
-    return current_user;
   }
 
   static getCurrentUserData() async {
     String uid = getCurrentUserUID();
-
-
-
     var db = RealTimeDatabase.getInstance();
-
     var ref = db.ref();
-
-    // print("hi");
     final snapshot = await ref.child('users/$uid').get();
-    // print("bye");
 
     if (snapshot.exists){
       Map data = snapshot.value as Map;
-      // print(data);
-
       return UserModel(uid: uid, created_at: DateTime.parse(data['createdAt']), email: data['email'], photo: data['profilePicture'], username: data['username'], name: data['name']);
-
     }else{
       // print("ello");
     }

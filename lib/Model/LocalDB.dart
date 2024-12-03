@@ -7,21 +7,32 @@ class LocalDB {
   static getInstance() async {
     if (db == null) {
       db = openDatabase(join(await getDatabasesPath(), 'hedeyety.db'),
-          onCreate: (db, version) {
-        return db.execute('CREATE TABLE events ('
-            'id integer primary key autoincrement,'
-            'name varchar(255) not null,'
-            'date varchar(255),'
-            'location varchar(255),'
-            'description varchar(255)'
-            ');'
-            'CREATE TABLE gifts('
-            'id integer primary key autoincrement,'
-            ''
-            ')');
-      },
-      version: 1
-      );
+          onCreate: (db, version) async {
+        print("Creating Local DB");
+        await db.execute('CREATE TABLE events ('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+            'name TEXT NOT NULL,'
+            'date TEXT NOT NULL,'
+            'location TEXT,'
+            'description TEXT,'
+            'published INTEGER NOT NULL'
+            ');');
+        await db.execute('CREATE TABLE gifts('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT,'
+            'name TEXT NOT NULL,'
+            'description TEXT,'
+            'category INT NOT NULL,'
+            'price REAL NOT NULL,'
+            'event_id INT NOT NULL,'
+            'status INT NOT NULL,'
+            'pledged INT NOT NULL,'
+            'FOREIGN KEY (event_id) REFERENCES events(id)'
+            ');');
+        await db.execute('CREATE TABLE category_enum('
+            'id INTEGER PRIMARY KEY,'
+            'category TEXT UNIQUE'
+            ');');
+      }, version: 1);
     }
 
     return db;

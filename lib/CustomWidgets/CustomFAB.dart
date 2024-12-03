@@ -52,7 +52,19 @@ class _CustomFABState extends State<CustomFAB> {
           }
         ),
         SpeedDialChild(
-          child: Icon(Icons.event)
+          child: Icon(Icons.event),
+          onTap: (){
+            Navigator.pushNamed(context, '/create_event');
+            setState(() {
+
+            });
+          }
+        ),
+        SpeedDialChild(
+            child: Icon(Icons.cake),
+            onTap: (){
+              Navigator.pushNamed(context, '/create_gift');
+            }
         )
       ],
     );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 
 
 class GiftCard extends StatelessWidget {
-  bool pledged = false;
-  GiftCard({super.key, required this.pledged});
+  Gift gift;
+  GiftCard({super.key, required this.gift});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +17,8 @@ class GiftCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Gift Name"),
-            TextButton(onPressed: pledged?null:(){}, child: Text("Pledge")),
+            Text(gift!.name as String),
+            //TextButton(onPressed: pledged?null:(){}, child: Text("Pledge")),
           ],
         ),
       ),
