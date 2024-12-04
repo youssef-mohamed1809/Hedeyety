@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/Model/Event.dart';
+import 'package:hedeyety/Model/Gift.dart';
 
 class CreateGiftPage extends StatefulWidget {
   CreateGiftPage({super.key});
@@ -12,7 +13,13 @@ class CreateGiftPage extends StatefulWidget {
 class _CreateGiftPageState extends State<CreateGiftPage> {
   GlobalKey<FormState> key = GlobalKey();
 
-  var events = [];
+  List events = [];
+
+  TextEditingController name_controller = TextEditingController();
+  TextEditingController price_controller = TextEditingController();
+  TextEditingController description_controller = TextEditingController();
+
+  String? selected_value;
 
   Future getEventNames() async{
     var res = await Event.getUpcomingEventNames();
@@ -30,11 +37,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
   @override
   Widget build(BuildContext context) {
 
-    TextEditingController name_controller = TextEditingController();
-    TextEditingController price_controller = TextEditingController();
-    TextEditingController description_controller = TextEditingController();
 
-    String? selected_value;
 
     return Scaffold(
       appBar: CustomAppBar(button: null),
@@ -72,18 +75,37 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                              ),
                            ),
                            DropdownButton(
+                             hint: Text("Select an Event"),
                              value: selected_value,
                                items: data.map((name){
                                  return DropdownMenuItem(child: Text(name), value: name,);
                                }).toList(),
                              onChanged: (value) {
-
                                  setState(() {
                                    selected_value = value as String?;
                                  });
                                  print(selected_value);
                              },
-                           )
+                           ),
+
+                           ElevatedButton(
+                           onPressed: (){
+
+                             var event_id = -1;
+
+                             print(event_id);
+
+                             print(events);
+
+                             for(int i = 0; i < events.length; i++){
+                                if(events[i]['name'] == selected_value){
+                                  event_id = events[i]['id'];
+                                }
+                             }
+                             print(event_id);
+                            Gift.createGift(name_controller.text, description_controller.text, "", price_controller.text, event_id);
+                           },
+                           child: Text("Add Gift"))
                          ],
                     ),
                   ),
