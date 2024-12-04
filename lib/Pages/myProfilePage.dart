@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
 import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
@@ -39,10 +40,10 @@ class UserDetails extends StatefulWidget {
 }
 
 class _UserDetailsState extends State<UserDetails> {
-  Future<UserModel> loadUserData() async {
+  Future loadUserData() async {
 
     // await UserModel.get_id_by_username();
-    return await UserModel.getCurrentUserData();
+    return CurrentUser.getCurrentUser();
 
   }
 
@@ -58,7 +59,7 @@ class _UserDetailsState extends State<UserDetails> {
               children: [
                 CircleAvatar(radius: 70),
                 SizedBox(height: 30),
-                Text(data.name),
+                Text(data.name as String),
                 Divider(),
                 TextButton(onPressed: (){}, child: Text("Edit Profile")),
                 TextButton(onPressed: (){}, child: Text("Events")),

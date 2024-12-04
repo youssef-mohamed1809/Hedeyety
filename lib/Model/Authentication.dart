@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import'package:firebase_database/firebase_database.dart';
-import 'RTdb.dart';
+import 'package:hedeyety/CurrentUser.dart';
 import 'UserModel.dart';
 
 class Authentication{
@@ -11,14 +10,17 @@ class Authentication{
           email: email,
           password: password
       );
+
+      UserModel? user = await CurrentUser.getCurrentUser();
+      print(user?.uid);
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        return 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        return 'Wrong password provided for that user.';
       }
-      return false;
+      return 'An error occurred, please try again.';
     }
   }
 
@@ -31,7 +33,7 @@ class Authentication{
 
       User? user = credential.user;
 
-      await UserModel.add_to_db(
+      await UserModel.add_new_user_to_db(
           uid: user?.uid,
           name: name,
           username: username,
@@ -41,18 +43,19 @@ class Authentication{
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        return 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        return 'The account already exists for that email.';
       }
       return false;
     } catch (e) {
       print(e);
-      return false;
+      return 'An error occurred, please try again';
     }
   }
 
   static logout() async {
+    CurrentUser.user = null;
     await FirebaseAuth.instance.signOut();
   }
 

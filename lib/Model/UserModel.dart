@@ -1,165 +1,162 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'RTdb.dart';
 
-class UserModel{
+class UserModel {
+  String? uid;
+  DateTime? created_at;
+  String? email;
+  String? photo;
+  String? username;
+  String? name;
 
-  String uid;
-  DateTime created_at;
-  String email;
-  String photo;
-  String username;
-  String name;
+  UserModel();
 
-  UserModel({
-    required this.uid,
-    required this.created_at,
-    required this.email,
-    required this.photo,
-    required this.username,
-    required this.name
-  });
-
-
-  static get_id_by_username(username) async {
-    var db = RealTimeDatabase.getInstance();
-    var ref = db.ref();
-
-    var event = await ref.child("/users").orderByChild("username").equalTo(username).once();
-
-    final data = event.snapshot.value;
-
-    print(data);
-
-    if(data != null) {
-      Map x = event.snapshot.value;
-      return x.keys.first;
-    }else{
-      return -1;
-    }
-  }
-
-
-  static Future<bool> add_friend(friend_username) async{
-
-    var user_id = getCurrentUserUID();
-    var friend_id =  await get_id_by_username(friend_username);
-
-    if(friend_id == false){
-      return false;
-    }
-
-    var res = await _add_a_friend(user_id, friend_id);
-    if(!res){
-      return res;
-    }
-    res = await _add_a_friend(friend_id, user_id);
-    return res;
-
-  }
-
-  static Future<bool> _add_a_friend(user_id, friend_id) async {
-
-    if (friend_id != -1){
-      var db = RealTimeDatabase.getInstance();
-
-      var ref = db.ref().child("users/$user_id/friends");
-
-      try{
-        var snapshot = await ref.get();
-
-        if(snapshot.exists){
-          Map friends = snapshot.value as Map;
-
-          if(!friends.containsKey(friend_id)){
-            friends[friend_id] = true;
-            await ref.set(friends);
-          }
-        }else{
-          Map friends = {
-            friend_id: true
-          };
-
-          await ref.set(friends);
-
-        }
-
-        return true;
-      }catch(e){
-        // print(e);
-        return false;
-      }
-    }
-    return false;
-
-  }
-
-  static getCurrentUserUID() {
-      User? user = FirebaseAuth.instance.currentUser;
-
-      if (user != null) {
-         return user.uid;
-
-      }else{
-        return false;
-      }
-  }
-
-  static getCurrentUserData() async {
+  static Future<UserModel?> getCurrentUserData() async {
     String uid = getCurrentUserUID();
     var db = RealTimeDatabase.getInstance();
     var ref = db.ref();
     final snapshot = await ref.child('users/$uid').get();
 
-    if (snapshot.exists){
+    if (snapshot.exists) {
       Map data = snapshot.value as Map;
-      return UserModel(uid: uid, created_at: DateTime.parse(data['createdAt']), email: data['email'], photo: data['profilePicture'], username: data['username'], name: data['name']);
-    }else{
-      // print("ello");
+      UserModel user = UserModel();
+      user.uid = uid;
+      user.created_at = DateTime.parse(data['createdAt']);
+      user.email = data['email'];
+      user.photo = data['profilePicture'];
+      user.username = data['username'];
+      user.name = data['name'];
+
+      return user;
+    } else {
+      print("Error in getCurrentUserData function");
+      print(snapshot.error);
+      return null;
     }
   }
 
-  static add_to_db({uid, name, username, email}) async {
-    var db = RealTimeDatabase.getInstance();
+  Future<bool> add_friend(friend_username) async {
+    var friend_id = await get_id_by_username(friend_username);
 
-    var ref = db.ref("users/${uid}");
-
-    await ref.set({
-      "name": name,
-      "username": username,
-      "email": email,
-      "profilePicture": "",
-      "friends": {},
-      "createdAt": (DateTime.now()).toString()
-    });
-  }
-
-
-  static getNameByID(id) async{
-    var db = RealTimeDatabase.getInstance();
-    var ref = db.ref().child("users/$id/name");
-    try{
-      var snapshot = await ref.get();
-      // print(snapshot.value);
-      return snapshot.value;
-    }catch(e){
-      print(e);
+    if (friend_id == false) {
+      print("Friend ID not found");
+      return false;
     }
+
+    var status = await _add_a_friend(uid, friend_id);
+    if (!status) {
+      return status;
+    }
+    status = await _add_a_friend(friend_id, uid);
+    return status;
   }
 
-  static Future<List> getMyFriendsIDs() async{
+  Future<bool> _add_a_friend(user_id, friend_id) async {
+    if (friend_id != -1) {
+      var db = RealTimeDatabase.getInstance();
+
+      var ref = db.ref().child("users/$user_id/friends");
+
+      try {
+        var snapshot = await ref.get();
+
+        if (snapshot.exists) {
+          Map friends = snapshot.value as Map;
+
+          if (!friends.containsKey(friend_id)) {
+            friends[friend_id] = true;
+            await ref.set(friends);
+          }
+        } else {
+          Map friends = {friend_id: true};
+
+          await ref.set(friends);
+        }
+
+        return true;
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    }
+    return false;
+  }
+
+  Future<List> getMyFriendsIDs() async {
     var db = RealTimeDatabase.getInstance();
-    var id = getCurrentUserUID();
-    var ref = db.ref().child("users/$id/friends");
-    try{
+    var ref = db.ref().child("users/$uid/friends");
+    try {
       var snapshot = await ref.get();
       var data = snapshot.value;
-      // print(data.keys.toList());
       return data.keys.toList();
-    }catch(e){
+    } catch (e) {
+      print("An error occurred in getMyFriendsIDs");
       print(e);
       return [];
     }
   }
+
+  static get_id_by_username(username) async {
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref();
+
+    var event = await ref
+        .child("/users")
+        .orderByChild("username")
+        .equalTo(username)
+        .once();
+
+    final data = event.snapshot.value;
+
+    if (data != null) {
+      Map x = event.snapshot.value;
+      return x.keys.first;
+    } else {
+      return -1;
+    }
+  }
+
+  static getCurrentUserUID() {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      return user.uid;
+    } else {
+      return false;
+    }
+  }
+
+  static add_new_user_to_db({uid, name, username, email}) async {
+    var db = RealTimeDatabase.getInstance();
+
+    var ref = db.ref("users/${uid}");
+
+    try{
+      await ref.set({
+        "name": name,
+        "username": username,
+        "email": email,
+        "profilePicture": "",
+        "friends": {},
+        "createdAt": (DateTime.now()).toString()
+      });
+    }catch(e){
+      print("An error occurred while adding to RTDB");
+      print(e);
+    }
+  }
+
+  static getNameByID(id) async {
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child("users/$id/name");
+    try {
+      var snapshot = await ref.get();
+      return snapshot.value;
+    } catch (e) {
+      print("An error occured in getNameByID");
+      print(e);
+    }
+  }
+
 
 }

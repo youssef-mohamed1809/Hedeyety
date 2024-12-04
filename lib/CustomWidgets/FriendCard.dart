@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class FriendCard extends StatelessWidget {
   String name = "";
   int upcoming_events = 0;
-  FriendCard({super.key, required this.name, required this.upcoming_events});
+  String id;
+  FriendCard({super.key, required this.name, required this.upcoming_events, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class FriendCard extends StatelessWidget {
           ),
           onPressed: (){
             print(name);
+            print(id);
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -11,12 +11,14 @@ class MyGiftsCard extends StatelessWidget {
   String event = "";
   String description = "";
 
-  MyGiftsCard({super.key, required this.status, required this.name, this.event = "", this.description = ""});
+  bool showEventName;
+
+  MyGiftsCard({super.key, required this.status, required this.name, this.event = "", this.description = "", required this.showEventName});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),  // Add some padding for better spacing
+      padding: const EdgeInsets.symmetric(vertical: 10),  // Add some padding for better spacing
       child: Column(
         children: [
           SizedBox(
@@ -47,7 +49,7 @@ class MyGiftsCard extends StatelessWidget {
                               : (status == 1)
                               ? "Pledged"
                               : "Not Bought",
-                          style: TextStyle(color: Colors.white), // Added color to the text
+                          style: const TextStyle(color: Colors.white), // Added color to the text
                         ),
                       ),
                     ),
@@ -55,15 +57,15 @@ class MyGiftsCard extends StatelessWidget {
                   Expanded(
                     child: TextButton(
                       onPressed: (status>=1)?null:() {},
-                      child: Text("Edit", textAlign: TextAlign.center), // Centering the button
+                      child: const Text("Edit", textAlign: TextAlign.center), // Centering the button
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          (event!="")?ElevatedButton(onPressed: (){}, child: Text(event))
-              :Text("No Event Assigned", style: TextStyle(fontStyle: FontStyle.italic),)
+          (showEventName)?((event!="")?ElevatedButton(onPressed: (){}, child: Text(event))
+              :const Text("No Event Assigned", style: TextStyle(fontStyle: FontStyle.italic),)):const SizedBox()
         ],
       ),
     );

@@ -14,46 +14,44 @@ class MyEvents extends StatefulWidget {
 
 class _MyEventsState extends State<MyEvents> {
   Future getEvents() async {
-    var events = await Event.getAllEvents();
-    print(events);
+    var events = await Event.getAllMyEvents();
     return events;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          button: IconButton(onPressed: (){}, icon: Icon(Icons.filter_alt))
-      ),
-      body: Container(
-          margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
-          child: FutureBuilder(
-              future: getEvents(),
-              builder: (context, snapshot){
-                if(snapshot.hasData){
-                  List data = snapshot.data;
-                  print(data);
-                  if(data.isEmpty){
-                    return Center(child: Text("You hav no events yet."));
-                  }else{
-                  return ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (BuildContext, index){
-                              return EventCard(event: data[index]);
-                      }
-                  );
+        appBar: CustomAppBar(
+            button: IconButton(onPressed: () {}, icon: Icon(Icons.filter_alt))),
+        body: Container(
+            margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
+            child: FutureBuilder(
+                future: getEvents(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List data = snapshot.data;
+                    print(data);
+                    if (data.isEmpty) {
+                      return Center(child: Text("You hav no events yet."));
+                    } else {
+                      return ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext, index) {
+                            return EventCard(event: data[index]);
+                          });
+                    }
+                  } else if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Center(
+                      child: Text("An error has occured"),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                }else if(snapshot.hasError){
-                  print(snapshot.error);
-                  return Center(child: Text("An error has occured"),);
-                }else{
-                return Center(child: CircularProgressIndicator(),);
-                }
-              }
-          )
-      ),
-      floatingActionButton: CustomFAB(),
-      bottomNavigationBar: NavBar(current_page: 1)
-    );
+                })),
+        floatingActionButton: CustomFAB(),
+        bottomNavigationBar: NavBar(current_page: 1));
   }
 }

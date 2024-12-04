@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hedeyety/Model/Event.dart';
-import 'package:hedeyety/Model/Gift.dart';
-import 'package:hedeyety/Model/LocalDB.dart';
 import 'package:hedeyety/Pages/eventCreationPage.dart';
 import 'package:hedeyety/Pages/loginPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
@@ -19,13 +16,8 @@ void main() async {
   runApp(const MyApp());
 }
 
-
-
-
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -54,7 +46,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
@@ -62,25 +53,19 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot){
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return Scaffold(
-                body: CircularProgressIndicator(),
-              );
-            }else if(snapshot.hasData){
-              Future.microtask(() => Navigator.pushReplacementNamed(context, '/home'));
-            }else{
-              Future.microtask(() => Navigator.pushReplacementNamed(context, '/login'));
-            }
-            return SizedBox.shrink();
-        }
-    );
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasData) {
+            Future.microtask(
+                () => Navigator.pushReplacementNamed(context, '/home'));
+          } else {
+            Future.microtask(
+                () => Navigator.pushReplacementNamed(context, '/login'));
+          }
+          return SizedBox.shrink();
+        });
   }
 }
-
-
-
-
-
-
-

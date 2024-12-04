@@ -5,8 +5,7 @@ class LocalDB {
   static var db;
 
   static getInstance() async {
-    if (db == null) {
-      db = openDatabase(join(await getDatabasesPath(), 'hedeyety.db'),
+    db ??= openDatabase(join(await getDatabasesPath(), 'hedeyety.db'),
           onCreate: (db, version) async {
         print("Creating Local DB");
         await db.execute('CREATE TABLE events ('
@@ -25,7 +24,6 @@ class LocalDB {
             'price REAL NOT NULL,'
             'event_id INT NOT NULL,'
             'status INT NOT NULL,'
-            'pledged INT NOT NULL,'
             'FOREIGN KEY (event_id) REFERENCES events(id)'
             ');');
         await db.execute('CREATE TABLE category_enum('
@@ -33,7 +31,6 @@ class LocalDB {
             'category TEXT UNIQUE'
             ');');
       }, version: 1);
-    }
 
     return db;
   }

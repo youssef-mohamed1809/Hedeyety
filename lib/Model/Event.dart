@@ -1,7 +1,5 @@
 import 'package:hedeyety/Model/RTdb.dart';
-import 'package:hedeyety/Model/UserModel.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:intl/intl.dart';
 
 import 'LocalDB.dart';
 
@@ -39,24 +37,7 @@ class Event{
       conflictAlgorithm: ConflictAlgorithm.replace
     );
   }
-
-
-
-  // static publishEvent(Event event) async{
-  //   // var userID = await UserModel.getCurrentUserUID();
-  //   // var db = RealTimeDatabase.getInstance();
-  //   // var ref = db.ref().child('users/$userID/events/${event.id}');
-  //   // await ref.set({
-  //   //   'name': event.name,
-  //   //   'date': "${event.date?.year}-${event.date?.month}-${event.date?.day}",
-  //   //   'location': event.location,
-  //   //   'description': event.description
-  //   // });
-  // }
-
-
-
-  static getAllEvents() async {
+  static getAllMyEvents() async {
     var db = await LocalDB.getInstance();
     List<Map> res = await db.rawQuery("select * from events");
     List events = [];
@@ -71,22 +52,21 @@ class Event{
 
       try{
         events.add(Event(
+          id: row['id'],
             name: row['name'],
             date: DateTime.parse(date),
             location: row['location'],
             description: row['description']
         ));
       }catch(e){
+        print("Error in getAllMyEvents");
         print(e);
-        print("skipping");
       }
     });
-  // print(res);
 
 
     return events;
   }
-
   static getUpcomingEventNames() async {
     var db = await LocalDB.getInstance();
     List<Map> res = await db.rawQuery("select * from events");
@@ -101,17 +81,11 @@ class Event{
       DateTime d = DateTime.parse(date);
 
       if(d.compareTo(DateTime.now()) > 0){
-          events.add(event);
+        events.add(event);
       }
     });
-
-  // print(events);
     return events;
   }
-
-
-
-
   static getNumberOfUpcomingEvents(id) async {
 
     var db = RealTimeDatabase.getInstance();
@@ -128,15 +102,32 @@ class Event{
         DateTime d = DateTime.parse(e['date']);
         if(d.compareTo(DateTime.now()) >= 0){
           count++;
-          print("hi");
         }
       });
       return count;
     }catch(e){
+      print("Error in getNumberOfUpcomingEvents");
       print(e);
     }
 
 
   }
+
+
+  // static publishEvent(Event event) async{
+  //   // var userID = await UserModel.getCurrentUserUID();
+  //   // var db = RealTimeDatabase.getInstance();
+  //   // var ref = db.ref().child('users/$userID/events/${event.id}');
+  //   // await ref.set({
+  //   //   'name': event.name,
+  //   //   'date': "${event.date?.year}-${event.date?.month}-${event.date?.day}",
+  //   //   'location': event.location,
+  //   //   'description': event.description
+  //   // });
+  // }
+
+
+
+
 
 }

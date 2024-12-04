@@ -1,4 +1,3 @@
-import 'RTdb.dart';
 import 'LocalDB.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,8 +9,9 @@ class Gift{
   String? price;
   String? pledged;
   String? name;
+  String? status;
 
-  Gift({this.id, this.name, this.description, this.category, this.price, this.pledged});
+  Gift({this.id, this.name, this.description, this.category, this.price, this.status});
 
   static createGift(name, description, category, price, event_id) async {
     var db = await LocalDB.getInstance();
@@ -22,18 +22,23 @@ class Gift{
           'description': description,
           'price': price,
           'category': category,
-          'pledged': 0,
+          'status': 0,
           'event_id': event_id,
-          'status': 0
         },
         conflictAlgorithm: ConflictAlgorithm.replace
     );
   }
-
-
   static getLocalGifts(event_id) async {
     var db = await LocalDB.getInstance();
-    List<Map> res = await db.rawQuery("select * from gifts");
+    String query = "";
+
+    if(event_id == -1){
+      query = "select * from gifts";
+    }else{
+      query = "select * from gifts where event_id = $event_id";
+    }
+
+    List<Map> res = await db.rawQuery(query);
     List gifts = [];
 
     res.forEach((row){
@@ -45,7 +50,7 @@ class Gift{
           description: row['description'],
             category: row['category'].toString(),
             price: row['price'].toString(),
-            pledged: row['pledged'].toString()
+            status: row['status'].toString()
         ));
       }catch(e){
         print(e);

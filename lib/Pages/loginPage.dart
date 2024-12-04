@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 
@@ -11,7 +10,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  GlobalKey<FormState> _key = GlobalKey();
+  final GlobalKey<FormState> _key = GlobalKey();
+
+  bool passwordNotVisible = true;
 
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
@@ -27,12 +28,12 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Welcome!",
                 style: TextStyle(fontSize: 30),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Form(
@@ -46,42 +47,66 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(30)),
                       ),
                       controller: email_controller,
-                      validator: (email) {},
+                      validator: (email) {
+                        if (email!.isEmpty) {
+                          return "Please enter an email";
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                      obscureText: passwordNotVisible,
                       decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(passwordNotVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                passwordNotVisible = !passwordNotVisible;
+                              });
+                            },
+                          ),
                           hintText: "Password",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30))),
                       controller: password_controller,
-                      validator: (password) {},
+                      validator: (password) {
+                        if (password!.isEmpty) {
+                          return "Please enter a password";
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     ElevatedButton(
                         onPressed: () async {
                           if (_key.currentState!.validate()) {
-                            bool res = await Authentication.login(
-                                email_controller.text, password_controller.text);
+                            var res = await Authentication.login(
+                                email_controller.text,
+                                password_controller.text);
                             if (res == true) {
                               Navigator.pushReplacementNamed(context, '/home');
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Login Failed")));
+                                  SnackBar(content: Text(res as String)));
                             }
                           }
                         },
-                        child: Text("Login"))
+                        child: const Text("Login"))
                   ],
                 ),
               ),
-              TextButton(onPressed: (){
-                Navigator.pushNamed(context, '/signup');
-              }, child: Text("Don't have an account? Sign up here"))
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: const Text("Don't have an account? Sign up here"))
             ],
           ),
         ),

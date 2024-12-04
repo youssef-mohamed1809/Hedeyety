@@ -29,8 +29,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
-              Text("Create a New Event"),
-              SizedBox(height: 40,),
+              const Text("Create a New Event"),
+              const SizedBox(height: 40,),
               Form(
                 key: key,
                 child: Column(
@@ -42,14 +42,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30))),
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     TextFormField(
                         controller: location_controller,
                         decoration: InputDecoration(
                             hintText: "location",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30)))),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     TextFormField(
                       controller: description_controller,
                       decoration: InputDecoration(
@@ -57,11 +57,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30))),
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(onPressed: () async {
-                        event_date = await showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime.now(), lastDate: DateTime(3000)) as DateTime?;
+                        event_date = await showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime.now(), lastDate: DateTime(3000));
                         if(event_date != null){
                           setState(() {
                               button_text =  "Event Date: ${event_date?.day}/${event_date?.month}/${event_date?.year}";
@@ -73,7 +73,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         }
                         }, child: Text(button_text,)),
                     ),
-                    SizedBox(height: 40,),
+                    const SizedBox(height: 40,),
                     ElevatedButton(onPressed: (){
                       if(key.currentState!.validate() && event_date != null){
                         Event.createEvent(name_controller.text, "${event_date?.year}-${event_date?.month}-${event_date?.day}", location_controller.text, description_controller.text);
@@ -81,7 +81,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           Navigator.pop(context);
                         });
                       }
-                    }, child: Text("Create Event"))
+                    }, child: const Text("Create Event"))
                   ],
                 ),
               )

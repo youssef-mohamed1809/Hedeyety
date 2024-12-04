@@ -21,10 +21,10 @@ class GiftsPage extends StatelessWidget {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                MyGiftsCard(status: 2, name: "Iphone 12", event: "Birhday", description: "I want a blue Iphone 12 Pro Max with 128 GB of Storage",),
-                MyGiftsCard(status: 0, name: "Elden Ring", event: "Graduation Ceremony"),
-                MyGiftsCard(status: 1, name: "Piano"),
-                MyGiftsCard(status: 0, name: "Great Dane Dog (Blue)"),
+                MyGiftsCard(status: 2, name: "Iphone 12", event: "Birhday", description: "I want a blue Iphone 12 Pro Max with 128 GB of Storage", showEventName: true,),
+                MyGiftsCard(status: 0, name: "Elden Ring", event: "Graduation Ceremony", showEventName: true,),
+                MyGiftsCard(status: 1, name: "Piano", showEventName: true,),
+                MyGiftsCard(status: 0, name: "Great Dane Dog (Blue)", showEventName: true,),
               ],
             ),
           )

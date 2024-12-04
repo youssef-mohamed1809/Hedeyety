@@ -9,35 +9,33 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: TextButton(
-        style: TextButton.styleFrom(
-            alignment: Alignment.centerLeft
-        ),
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EventDetailsPage(event: event)));
-          print("Events");
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: TextButton(
+            style: TextButton.styleFrom(alignment: Alignment.centerLeft),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EventDetailsPage(event: event)));
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.calendar_month),
-                    SizedBox(width: 10),
-                    Text(event.name as String),
+                    Row(
+                      children: [
+                        const Icon(Icons.calendar_month),
+                        const SizedBox(width: 10),
+                        Text(event.name as String),
+                      ],
+                    ),
+                    ElevatedButton(onPressed: () {}, child: const Text("Edit"))
                   ],
                 ),
-                ElevatedButton(onPressed: (){}, child: Text("Edit"))
+                Text(
+                    "Event Date: ${event.date?.day}/${event.date?.month}/${event.date?.year}")
               ],
-            ),
-            Text("Event Date: ${event.date?.day}/${event.date?.month}/${event.date?.year}")
-          ],
-        )
-      )
-    );
+            )));
   }
 }

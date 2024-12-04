@@ -10,13 +10,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  GlobalKey<FormState> _key = GlobalKey();
+  final GlobalKey<FormState> _key = GlobalKey();
+
+  bool passwordNotVisible = true;
 
   TextEditingController name_controller = TextEditingController();
   TextEditingController username_controller = TextEditingController();
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +30,12 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Creat a new account",
+              const Text(
+                "Create a new account",
                 style: TextStyle(fontSize: 30),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Form(
@@ -48,9 +49,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             borderRadius: BorderRadius.circular(30)),
                       ),
                       controller: name_controller,
-                      validator: (name) {},
+                      validator: (name) {
+                        if (name!.isEmpty) {
+                          return "Please enter a password";
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
@@ -60,9 +66,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             borderRadius: BorderRadius.circular(30)),
                       ),
                       controller: username_controller,
-                      validator: (name) {},
+                      validator: (username) {
+                        if (username!.isEmpty) {
+                          return "Please enter a password";
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
@@ -72,37 +83,61 @@ class _SignUpPageState extends State<SignUpPage> {
                             borderRadius: BorderRadius.circular(30)),
                       ),
                       controller: email_controller,
-                      validator: (email) {},
+                      validator: (email) {
+                        if (email!.isEmpty) {
+                          return "Please enter a password";
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                      obscureText: passwordNotVisible,
                       decoration: InputDecoration(
                           hintText: "Password",
+                          suffixIcon: IconButton(
+                            icon: Icon(passwordNotVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                passwordNotVisible = !passwordNotVisible;
+                              });
+                            },
+                          ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30))),
                       controller: password_controller,
-                      validator: (password) {},
+                      validator: (password) {
+                        if (password!.isEmpty) {
+                          return "Please enter a password";
+                        }
+                        return null;
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     ElevatedButton(
                         onPressed: () async {
                           if (_key.currentState!.validate()) {
-                            bool res = await Authentication.signup(
-                                name_controller.text, username_controller.text, email_controller.text, password_controller.text);
+                            var res = await Authentication.signup(
+                                name_controller.text,
+                                username_controller.text,
+                                email_controller.text,
+                                password_controller.text);
                             if (res == true) {
                               Navigator.pushNamedAndRemoveUntil(context,
                                   '/home', (Route<dynamic> route) => false);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Signup Failed")));
+                                  SnackBar(content: Text(res as String)));
                             }
                           }
                         },
-                        child: Text("Sign up"))
+                        child: const Text("Sign up"))
                   ],
                 ),
               ),
