@@ -1,4 +1,6 @@
+import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Model/RTdb.dart';
+import 'package:hedeyety/Model/UserModel.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'LocalDB.dart';
@@ -114,17 +116,40 @@ class Event{
   }
 
 
-  // static publishEvent(Event event) async{
-  //   // var userID = await UserModel.getCurrentUserUID();
-  //   // var db = RealTimeDatabase.getInstance();
-  //   // var ref = db.ref().child('users/$userID/events/${event.id}');
-  //   // await ref.set({
-  //   //   'name': event.name,
-  //   //   'date': "${event.date?.year}-${event.date?.month}-${event.date?.day}",
-  //   //   'location': event.location,
-  //   //   'description': event.description
-  //   // });
-  // }
+  static publishEvent(Event event) async{
+    var userID = await UserModel.getCurrentUserUID();
+    var db = RealTimeDatabase.getInstance();
+    var gifts_obj  = await Gift.getLocalGifts(event.id);
+    var events_gifts_maps = [];
+    try{
+      gifts_obj.forEach((gift){
+        events_gifts_maps.add(gift.toMap());
+      });
+    }catch(e){
+      print("From Publish event");
+      print(e);
+    }
+
+    var ref = db.ref().child('users/$userID/events/${event.id}');
+    await ref.set({
+      'name': event.name,
+      'date': "${event.date?.year}-${event.date?.month}-${event.date?.day}",
+      'location': event.location,
+      'description': event.description,
+      'gifts': events_gifts_maps
+    });
+
+    await event.updatePublished(1);
+
+  }
+
+  Future<void> updatePublished(value) async{
+    var db = await LocalDB.getInstance();
+    await db.rawUpdate("update events set published = $value where id = $id");
+  }
+
+
+
 
 
 

@@ -13,6 +13,17 @@ class Gift{
 
   Gift({this.id, this.name, this.description, this.category, this.price, this.status});
 
+  Map<String, Object?> toMap(){
+    return {
+      'id': id,
+      'name': name,
+      'category': category,
+      'price': price,
+      'description': description,
+      'status': status
+    };
+  }
+
   static createGift(name, description, category, price, event_id) async {
     var db = await LocalDB.getInstance();
     await db.insert(

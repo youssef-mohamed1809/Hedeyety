@@ -24,7 +24,7 @@ class _MyEventsState extends State<MyEvents> {
         appBar: CustomAppBar(
             button: IconButton(onPressed: () {}, icon: Icon(Icons.filter_alt))),
         body: Container(
-            margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
+            margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
             child: FutureBuilder(
                 future: getEvents(),
                 builder: (context, snapshot) {
