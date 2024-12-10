@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-
+import 'package:hedeyety/Model/Friend.dart';
 
 class FriendCard extends StatelessWidget {
   String name = "";
   int upcoming_events = 0;
   String id;
-  FriendCard({super.key, required this.name, required this.upcoming_events, required this.id});
+  FriendCard(
+      {super.key,
+      required this.name,
+      required this.upcoming_events,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +17,12 @@ class FriendCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10),
       child: SizedBox(
         child: TextButton(
-          style: TextButton.styleFrom(
-            alignment: Alignment.centerLeft
-          ),
-          onPressed: (){
+          style: TextButton.styleFrom(alignment: Alignment.centerLeft),
+          onPressed: () async {
             print(name);
             print(id);
+            await Friend.getFriendDetails(id);
+
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +30,10 @@ class FriendCard extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.person),
-                  Text(name, style: const TextStyle(fontSize: 20),),
+                  Text(
+                    name,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ],
               ),
               upcoming_events == 0

@@ -86,15 +86,16 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
 
                                 print(event_id);
 
-                                print(events);
+                                // print(events);
 
                                 for (int i = 0; i < events.length; i++) {
                                   if (events[i]['name'] == selected_value) {
                                     event_id = events[i]['id'];
                                   }
                                 }
-                                print(event_id);
+                                // print(event_id);
                                 Gift.createGift(
+                                    -1,
                                     name_controller.text,
                                     description_controller.text,
                                     "",

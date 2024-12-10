@@ -76,7 +76,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     const SizedBox(height: 40,),
                     ElevatedButton(onPressed: (){
                       if(key.currentState!.validate() && event_date != null){
-                        Event.createEvent(name_controller.text, "${event_date?.year}-${event_date?.month}-${event_date?.day}", location_controller.text, description_controller.text);
+                        Event.createEvent(-1, name_controller.text, "${event_date?.year}-${event_date?.month}-${event_date?.day}", location_controller.text, description_controller.text);
                         setState(() {
                           Navigator.pop(context);
                         });

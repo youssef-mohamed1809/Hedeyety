@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedeyety/CurrentUser.dart';
+import 'package:hedeyety/Model/Event.dart';
+import 'package:hedeyety/Model/LocalDB.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'UserModel.dart';
 
 class Authentication{
@@ -13,6 +17,7 @@ class Authentication{
 
       UserModel? user = await CurrentUser.getCurrentUser();
       print(user?.uid);
+      Event.synchronizeFirebaseWithLocal();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -57,6 +62,11 @@ class Authentication{
   static logout() async {
     CurrentUser.user = null;
     await FirebaseAuth.instance.signOut();
+    String dbsPath = await getDatabasesPath();
+    String dbPath = join(dbsPath, 'hedeyety.db');
+    await deleteDatabase(dbPath);
+    LocalDB.db = null;
+
   }
 
   static user_signed_in(){

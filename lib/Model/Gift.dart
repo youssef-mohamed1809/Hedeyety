@@ -24,20 +24,36 @@ class Gift{
     };
   }
 
-  static createGift(name, description, category, price, event_id) async {
+  static createGift(id, name, description, category, price, event_id, {int? status}) async {
     var db = await LocalDB.getInstance();
-    await db.insert(
-        'gifts',
-        {
-          'name': name,
-          'description': description,
-          'price': price,
-          'category': category,
-          'status': 0,
-          'event_id': event_id,
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace
-    );
+    if(id == -1){
+      await db.insert(
+          'gifts',
+          {
+            'name': name,
+            'description': description,
+            'price': price,
+            'category': category,
+            'status': 0,
+            'event_id': event_id,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
+    }else{
+      await db.insert(
+          'gifts',
+          {
+            'id': id,
+            'name': name,
+            'description': description,
+            'price': price,
+            'category': category,
+            'status': status,
+            'event_id': event_id,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
+    }
   }
   static getLocalGifts(event_id) async {
     var db = await LocalDB.getInstance();

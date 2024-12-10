@@ -1,3 +1,4 @@
+import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Model/RTdb.dart';
 import 'package:hedeyety/Model/UserModel.dart';
@@ -25,19 +26,69 @@ class Event{
 
   Event({this.id, this.name, this.date, this.location, this.description, this.published});
 
-  static createEvent(name, date, location, description) async{
+  static synchronizeFirebaseWithLocal() async {
+    var id = UserModel.getCurrentUserUID();
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child('users/$id/events/');
+    var snapshot = await ref.get();
+    var data = snapshot.value as Map;
+    for (var entry in data.entries) {
+      var eventDetails = entry.value;
+        await createEvent(
+          eventDetails['id'],
+          eventDetails['name'],
+          eventDetails['date'],
+          eventDetails['location'],
+          eventDetails['description'],
+        );
+        if(eventDetails['gifts'] != null){
+          for(var gift_entry in eventDetails['gifts'].entries){
+            var giftDetails = gift_entry.value;
+            print(giftDetails);
+            await Gift.createGift(
+                giftDetails['id'],
+                giftDetails['name'],
+                giftDetails['description'],
+                giftDetails['category'],
+                giftDetails['price'],
+                eventDetails['id'],
+                status: int.parse(giftDetails['status'])
+            );
+          }
+        }
+    }
+
+  }
+
+
+  static createEvent(id, name, date, location, description) async{
     var db = await LocalDB.getInstance();
-    await db.insert(
-      'events',
-      {
-        'name': name,
-        'date': date,
-        'location': location,
-        'description': description,
-        'published': 0
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace
-    );
+    if(id == -1){
+      await db.insert(
+          'events',
+          {
+            'name': name,
+            'date': date,
+            'location': location,
+            'description': description,
+            'published': 0
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
+    }else{
+      await db.insert(
+          'events',
+          {
+            'id': id,
+            'name': name,
+            'date': date,
+            'location': location,
+            'description': description,
+            'published': 1
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace
+      );
+    }
   }
   static getAllMyEvents() async {
     var db = await LocalDB.getInstance();
@@ -58,7 +109,8 @@ class Event{
             name: row['name'],
             date: DateTime.parse(date),
             location: row['location'],
-            description: row['description']
+            description: row['description'],
+            published: row['published'],
         ));
       }catch(e){
         print("Error in getAllMyEvents");
@@ -130,14 +182,23 @@ class Event{
       print(e);
     }
 
-    var ref = db.ref().child('users/$userID/events/${event.id}');
+    var ref = db.ref().child('users/$userID/events/eventN${event.id}');
     await ref.set({
+      'id': event.id,
       'name': event.name,
       'date': "${event.date?.year}-${event.date?.month}-${event.date?.day}",
       'location': event.location,
       'description': event.description,
-      'gifts': events_gifts_maps
     });
+
+    // print(events_gifts_maps);
+    for(var gift in events_gifts_maps) {
+      var ref = db.ref().child(
+          'users/$userID/events/eventN${event.id}/gifts/giftN${gift['id']}');
+      await ref.set(gift);
+    }
+
+
 
     await event.updatePublished(1);
 

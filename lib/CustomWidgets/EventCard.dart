@@ -48,6 +48,7 @@ class _EventCardState extends State<EventCard> {
                                     setState(() {
                                       widget.event.published = 1;
                                     });
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Event Published Successfully")));
                                   }
                                 : null,
                             child: const Text("Publish"))

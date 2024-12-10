@@ -30,9 +30,9 @@ class _MyEventsState extends State<MyEvents> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List data = snapshot.data;
-                    print(data);
+
                     if (data.isEmpty) {
-                      return Center(child: Text("You hav no events yet."));
+                      return Center(child: Text("You have no events yet."));
                     } else {
                       return ListView.builder(
                           itemCount: data.length,
