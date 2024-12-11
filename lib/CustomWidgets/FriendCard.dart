@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hedeyety/Model/Friend.dart';
+import 'package:hedeyety/Model/UserModel.dart';
 
 class FriendCard extends StatelessWidget {
   String name = "";
@@ -21,7 +21,7 @@ class FriendCard extends StatelessWidget {
           onPressed: () async {
             print(name);
             print(id);
-            await Friend.getFriendDetails(id);
+            await UserModel.getFriendDetails(id);
 
           },
           child: Column(

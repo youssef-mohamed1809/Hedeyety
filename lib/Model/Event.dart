@@ -14,17 +14,17 @@ class Event{
   String? description;
   int? published;
 
+  Event({this.id, this.name, this.date, this.location, this.description, this.published});
   Map<String, Object?> toMap(){
     return {
       'id': id,
       'name': name,
-      'date': date,
+      'date': "${date!.year}-${date!.month}-${date!.day}",
       'location': location,
-      'description': description
+      'description': description,
+      'published': published
     };
   }
-
-  Event({this.id, this.name, this.date, this.location, this.description, this.published});
 
   static synchronizeFirebaseWithLocal() async {
     var id = UserModel.getCurrentUserUID();
@@ -59,8 +59,6 @@ class Event{
     }
 
   }
-
-
   static createEvent(id, name, date, location, description) async{
     var db = await LocalDB.getInstance();
     if(id == -1){
@@ -147,18 +145,20 @@ class Event{
     try{
       var snapshot = await ref.get();
       var events = snapshot.value;
+      print("Events: $events with id: $id");
       if(events == null){
         return 0;
-      }
+      }else{
       int count = 0;
-      events.forEach((e){
-
-        DateTime d = DateTime.parse(e['date']);
+      for(final key in events.keys){
+        DateTime d = DateTime.parse(events[key]['date']);
         if(d.compareTo(DateTime.now()) >= 0){
           count++;
         }
-      });
+      }
+
       return count;
+      }
     }catch(e){
       print("Error in getNumberOfUpcomingEvents");
       print(e);
@@ -166,12 +166,14 @@ class Event{
 
 
   }
+  static getFriendsEvents(id){
 
+  }
 
-  static publishEvent(Event event) async{
+  publishEvent() async{
     var userID = await UserModel.getCurrentUserUID();
     var db = RealTimeDatabase.getInstance();
-    var gifts_obj  = await Gift.getLocalGifts(event.id);
+    var gifts_obj  = await Gift.getLocalGifts(id);
     var events_gifts_maps = [];
     try{
       gifts_obj.forEach((gift){
@@ -182,38 +184,30 @@ class Event{
       print(e);
     }
 
-    var ref = db.ref().child('users/$userID/events/eventN${event.id}');
-    await ref.set({
-      'id': event.id,
-      'name': event.name,
-      'date': "${event.date?.year}-${event.date?.month}-${event.date?.day}",
-      'location': event.location,
-      'description': event.description,
-    });
-
-    // print(events_gifts_maps);
+    var ref = db.ref().child('users/$userID/events/eventN${id}');
+    await ref.set(this.toMap());
     for(var gift in events_gifts_maps) {
       var ref = db.ref().child(
-          'users/$userID/events/eventN${event.id}/gifts/giftN${gift['id']}');
+          'users/$userID/events/eventN${id}/gifts/giftN${gift['id']}');
       await ref.set(gift);
     }
 
 
-
-    await event.updatePublished(1);
+    published = 1;
+    await updateEvent();
 
   }
-
-  Future<void> updatePublished(value) async{
+  Future<void> updateEvent() async{
     var db = await LocalDB.getInstance();
-    await db.rawUpdate("update events set published = $value where id = $id");
+    db.update(
+        'events',
+        this.toMap(),
+        where: 'id = ?',
+        whereArgs: [id]
+    );
+
+    // if(published == 1){
+    //   publishEvent();
+    // }
   }
-
-
-
-
-
-
-
-
 }

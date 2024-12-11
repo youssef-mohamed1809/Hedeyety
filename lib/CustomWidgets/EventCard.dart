@@ -39,12 +39,15 @@ class _EventCardState extends State<EventCard> {
                     Row(
                       children: [
                         ElevatedButton(
-                            onPressed: () {}, child: const Text("Edit")),
+                            onPressed: () async {
+                              widget.event.name = "ello";
+                              await widget.event.updateEvent();
+                            }, child: const Text("Edit")),
                         const SizedBox(width: 10),
                         ElevatedButton(
                             onPressed: widget.event.published == 0
                                 ? () async {
-                                    await Event.publishEvent(widget.event);
+                                    await widget.event.publishEvent();
                                     setState(() {
                                       widget.event.published = 1;
                                     });
