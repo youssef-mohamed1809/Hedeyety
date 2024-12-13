@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomFAB.dart';
-import 'package:hedeyety/CustomWidgets/EventCard.dart';
+import 'package:hedeyety/CustomWidgets/MyEventCard.dart';
 import 'package:hedeyety/Model/Event.dart';
 
 class MyEvents extends StatefulWidget {
@@ -37,7 +37,7 @@ class _MyEventsState extends State<MyEvents> {
                       return ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (BuildContext, index) {
-                            return EventCard(event: data[index]);
+                            return MyEventCard(event: data[index]);
                           });
                     }
                   } else if (snapshot.hasError) {

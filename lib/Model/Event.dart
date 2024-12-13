@@ -44,7 +44,7 @@ class Event{
         if(eventDetails['gifts'] != null){
           for(var gift_entry in eventDetails['gifts'].entries){
             var giftDetails = gift_entry.value;
-            print(giftDetails);
+            // print(giftDetails);
             await Gift.createGift(
                 giftDetails['id'],
                 giftDetails['name'],
@@ -145,7 +145,7 @@ class Event{
     try{
       var snapshot = await ref.get();
       var events = snapshot.value;
-      print("Events: $events with id: $id");
+      // print("Events: $events with id: $id");
       if(events == null){
         return 0;
       }else{
@@ -166,8 +166,33 @@ class Event{
 
 
   }
-  static getFriendsEvents(id){
-
+  static Future<List<Event>> getFriendsEvents(id) async {
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child("users/$id/events");
+    try{
+      var snapshot = await ref.get();
+      var data = snapshot.value;
+      List<Event> events = [];
+      if(data == null){
+        print("No data");
+        return [];
+      }
+      for(var event_num in data.keys){
+        events.add(Event(
+            id: data[event_num]['id'],
+            name: data[event_num]['name'],
+            date: DateTime.parse(data[event_num]['date']),
+            location: data[event_num]['location'],
+            description: data[event_num]['description'],
+            published: 1
+        ));
+      }
+      return events;
+    }catch(e){
+      print("Error in getFriendEvents");
+      print(e);
+      return [];
+    }
   }
 
   publishEvent() async{

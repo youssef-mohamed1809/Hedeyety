@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/Model/UserModel.dart';
+import 'package:hedeyety/Pages/friendDetailsPage.dart';
 
 class FriendCard extends StatelessWidget {
   String name = "";
@@ -19,10 +20,7 @@ class FriendCard extends StatelessWidget {
         child: TextButton(
           style: TextButton.styleFrom(alignment: Alignment.centerLeft),
           onPressed: () async {
-            print(name);
-            print(id);
-            await UserModel.getFriendDetails(id);
-
+            Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetailsPage(id: id)));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

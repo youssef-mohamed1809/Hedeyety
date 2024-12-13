@@ -9,7 +9,7 @@ class UserModel {
   String? username;
   String? name;
 
-  UserModel({uid, created_at, email, photo, username, name});
+  UserModel({this.uid, this.created_at, this.email, this.photo, this.username, this.name});
 
   static Future<UserModel?> getCurrentUserData() async {
     String uid = getCurrentUserUID();
@@ -100,14 +100,18 @@ class UserModel {
     try {
       var snapshot = await ref.get();
       Map friend = snapshot.value as Map;
-      return UserModel(
+      // print(friend['name']);
+      var myUser = UserModel(
           uid: id,
-          created_at: DateTime.parse(friend['createdAt']),
-          email: friend['date'],
+          created_at: null,
+          email: friend['email'],
           photo: null,
           username: friend['username'],
           name: friend['name']
       );
+
+      print(myUser);
+      return myUser;
     } catch (e) {
       print(e);
       return false;
