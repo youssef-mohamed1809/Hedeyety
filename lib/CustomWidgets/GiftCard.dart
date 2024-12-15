@@ -5,7 +5,9 @@ import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 
 class GiftCard extends StatelessWidget {
   Gift gift;
-  GiftCard({super.key, required this.gift});
+  String user_id;
+  int event_id;
+  GiftCard({super.key, required this.gift, required this.user_id, required this.event_id});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,11 @@ class GiftCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(gift!.name as String),
-            //TextButton(onPressed: pledged?null:(){}, child: Text("Pledge")),
+            TextButton(onPressed: (int.parse(gift.status!) > 0)?null:() async {
+              //Pledge Gift
+              await gift.pledgeGift(user_id, event_id);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Gift pledged successfully")));
+            }, child: Text("Pledge")),
           ],
         ),
       ),

@@ -28,7 +28,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
     res.forEach((event) {
       eventNames.add(event['name']);
     });
-    print(eventNames);
+    // print(eventNames);
 
     return eventNames;
   }
@@ -77,14 +77,14 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                               setState(() {
                                 selected_value = value as String?;
                               });
-                              print(selected_value);
+                              // print(selected_value);
                             },
                           ),
                           ElevatedButton(
                               onPressed: () {
                                 var event_id = -1;
 
-                                print(event_id);
+                                // print(event_id);
 
                                 // print(events);
 

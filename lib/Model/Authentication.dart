@@ -16,7 +16,7 @@ class Authentication{
       );
 
       UserModel? user = await CurrentUser.getCurrentUser();
-      print(user?.uid);
+      // print(user?.uid);
       Event.synchronizeFirebaseWithLocal();
       return true;
     } on FirebaseAuthException catch (e) {

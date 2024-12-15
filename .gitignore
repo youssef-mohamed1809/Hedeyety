@@ -10,7 +10,7 @@ android/app/google-services.json
 .history
 .svn/
 migrate_working_dir/
-todo.text
+todo.md
 
 # IntelliJ related
 *.iml

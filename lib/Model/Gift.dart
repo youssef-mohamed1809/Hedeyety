@@ -1,3 +1,5 @@
+import 'package:hedeyety/Model/RTdb.dart';
+
 import 'LocalDB.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -80,14 +82,53 @@ class Gift{
             status: row['status'].toString()
         ));
       }catch(e){
+        print("From getLocalGifts");
         print(e);
-        print("skipping");
       }
     });
     // print(res);
     // print(gifts);
 
     return gifts;
+  }
+  static getFriendGifts(friendId, eventId) async{
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child("users/$friendId/events/eventN$eventId/gifts");
+    try{
+      var snapshot = await ref.get();
+      Map data = snapshot.value;
+      // print(data);
+      List<Gift> gifts = [];
+      for(var giftKey in data.keys){
+        gifts.add(Gift(
+          id: data[giftKey]['id'],
+          name: data[giftKey]['name'],
+          description: data[giftKey]['description'],
+          category: data[giftKey]['category'],
+          price: data[giftKey]['price'],
+          status: data[giftKey]['status'],
+        ));
+      }
+      return gifts;
+      // print(data);
+    }catch(e){
+      print("From getFriendsGifts");
+      print(e);
+      return null;
+    }
+  }
+
+  pledgeGift(giftOwnerID, eventId) async {
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child("users/$giftOwnerID/events/eventN$eventId/gifts/giftN$id/");
+
+    try{
+      await ref.update({"status": "1"});
+      status = "1";
+    }catch(e){
+      print("From pledgeGift");
+      print(e);
+    }
   }
 
 }

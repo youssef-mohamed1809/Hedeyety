@@ -110,7 +110,7 @@ class UserModel {
           name: friend['name']
       );
 
-      print(myUser);
+      // print(myUser);
       return myUser;
     } catch (e) {
       print(e);

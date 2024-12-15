@@ -69,7 +69,7 @@ class FriendDetailsPage extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: upcoming_events.length,
                               itemBuilder: (context, index) {
-                                return EventCard(event: upcoming_events[index]);
+                                return EventCard(event: upcoming_events[index], id: id);
                               }),
                           Divider(),
                           Text(
@@ -81,7 +81,7 @@ class FriendDetailsPage extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: past_events.length,
                               itemBuilder: (context, index) {
-                                return EventCard(event: past_events[index]);
+                                return EventCard(event: past_events[index], id: id);
                               }),
                         ],
                       );

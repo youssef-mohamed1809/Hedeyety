@@ -33,9 +33,9 @@ class _CustomFABState extends State<CustomFAB> {
                       actions: [
                         TextButton(
                           onPressed: () async {
-                            var friend_added =
-                                await CurrentUser.getCurrentUser()
-                                    .add_friend(friend_username.text);
+                            var user =
+                                await CurrentUser.getCurrentUser();
+                            var friend_added = user.add_friend(friend_username.text);
                             Navigator.pop(context);
                             if (friend_added == true) {
                               ScaffoldMessenger.of(context).showSnackBar(
