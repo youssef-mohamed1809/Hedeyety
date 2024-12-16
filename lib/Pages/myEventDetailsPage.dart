@@ -63,7 +63,7 @@ class EventDetailsPage extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: data.length,
                               itemBuilder: (BuildContext, index) {
-                                return MyGiftsCard(status: int.parse(data[index].status), name: data[index].name, showEventName: false,);
+                                return MyGiftsCard(gift: data[index],);
                               }),
                         );
                       }

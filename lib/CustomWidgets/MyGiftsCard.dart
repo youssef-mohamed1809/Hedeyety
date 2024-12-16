@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 
 //pledged => 1, blue
@@ -6,14 +7,11 @@ import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 //bought => 2, green
 
 class MyGiftsCard extends StatelessWidget {
-  int status = 0;
-  String name = "";
-  String event = "";
-  String description = "";
+  Gift gift;
 
-  bool showEventName;
+  // bool showEventName;
 
-  MyGiftsCard({super.key, required this.status, required this.name, this.event = "", this.description = "", required this.showEventName});
+  MyGiftsCard({super.key, required this.gift});
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +28,23 @@ class MyGiftsCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(name, textAlign: TextAlign.start), // Centering the text
+                    child: Text(gift.name as String, textAlign: TextAlign.start), // Centering the text
                   ),
                   Expanded(
                     child: Container(
                       width: 95,
                       height: 30,
                       decoration: BoxDecoration(
-                        color: (status == 2) ? Colors.green
-                            : (status == 1) ? Colors.blue
+                        color: (gift.status == "2") ? Colors.green
+                            : (gift.status == "1") ? Colors.blue
                             : Colors.red,
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Center(
                         child: Text(
-                          (status == 2)
+                          (gift.status == "2")
                               ? "Bought"
-                              : (status == 1)
+                              : (gift.status == "1")
                               ? "Pledged"
                               : "Not Bought",
                           style: const TextStyle(color: Colors.white), // Added color to the text
@@ -56,7 +54,7 @@ class MyGiftsCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextButton(
-                      onPressed: (status>=1)?null:() {},
+                      onPressed: (gift.status == "1" || gift.status == "2")?null:() {},
                       child: const Text("Edit", textAlign: TextAlign.center), // Centering the button
                     ),
                   ),
@@ -64,8 +62,8 @@ class MyGiftsCard extends StatelessWidget {
               ),
             ),
           ),
-          (showEventName)?((event!="")?ElevatedButton(onPressed: (){}, child: Text(event))
-              :const Text("No Event Assigned", style: TextStyle(fontStyle: FontStyle.italic),)):const SizedBox()
+          // (showEventName)?((event!="")?ElevatedButton(onPressed: (){}, child: Text(event))
+          //     :const Text("No Event Assigned", style: TextStyle(fontStyle: FontStyle.italic),)):const SizedBox()
         ],
       ),
     );
