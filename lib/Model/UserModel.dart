@@ -9,10 +9,12 @@ class UserModel {
   String? username;
   String? name;
 
+
   UserModel({this.uid, this.created_at, this.email, this.photo, this.username, this.name});
 
   static Future<UserModel?> getCurrentUserData() async {
     String uid = getCurrentUserUID();
+    // print(uid);
     var db = RealTimeDatabase.getInstance();
     var ref = db.ref();
     final snapshot = await ref.child('users/$uid').get();
@@ -74,7 +76,8 @@ class UserModel {
         "email": email,
         "profilePicture": "",
         "friends": {},
-        "createdAt": "${date.year}-${date.month}-${date.day}"
+        "createdAt": "${date.year}-${date.month}-${date.day}",
+        "pledgedGiftsNum": "0"
       });
     }catch(e){
       print("An error occurred while adding to RTDB");

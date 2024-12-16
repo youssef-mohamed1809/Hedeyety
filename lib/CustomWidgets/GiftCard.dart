@@ -3,12 +3,17 @@ import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 
 
-class GiftCard extends StatelessWidget {
+class GiftCard extends StatefulWidget {
   Gift gift;
   String user_id;
   int event_id;
   GiftCard({super.key, required this.gift, required this.user_id, required this.event_id});
 
+  @override
+  State<GiftCard> createState() => _GiftCardState();
+}
+
+class _GiftCardState extends State<GiftCard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -19,11 +24,20 @@ class GiftCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(gift!.name as String),
-            TextButton(onPressed: (int.parse(gift.status!) > 0)?null:() async {
+            Text(widget.gift!.name as String),
+            TextButton(onPressed: (int.parse(widget.gift.status!) > 0)?null:() async {
               //Pledge Gift
-              await gift.pledgeGift(user_id, event_id);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Gift pledged successfully")));
+              var res = await widget.gift.pledgeGift(widget.user_id, widget.event_id);
+              if(res == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Gift pledged successfully")));
+                setState(() {
+
+                });
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("An error occurred")));
+              }
             }, child: Text("Pledge")),
           ],
         ),

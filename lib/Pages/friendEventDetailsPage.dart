@@ -29,11 +29,13 @@ class FriendsEventDetailsPage extends StatelessWidget {
               ),
               Text(
                 "${event.location}",
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
               Text(
                 "${event.date?.day}/${event.date?.month}/${event.date?.year}",
-                style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                style:
+                    const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
               ),
               const SizedBox(
                 height: 20,
@@ -64,7 +66,11 @@ class FriendsEventDetailsPage extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: data.length,
                               itemBuilder: (BuildContext, index) {
-                                return GiftCard(gift: data[index], user_id: id, event_id: event.id as int,);
+                                return GiftCard(
+                                  gift: data[index],
+                                  user_id: id,
+                                  event_id: event.id as int,
+                                );
                               }),
                         );
                       }

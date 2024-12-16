@@ -1,4 +1,7 @@
+import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/Model/RTdb.dart';
+import 'package:hedeyety/Model/UserModel.dart';
+import 'package:uuid/uuid.dart';
 
 import 'LocalDB.dart';
 import 'package:sqflite/sqflite.dart';
@@ -86,8 +89,6 @@ class Gift{
         print(e);
       }
     });
-    // print(res);
-    // print(gifts);
 
     return gifts;
   }
@@ -125,9 +126,31 @@ class Gift{
     try{
       await ref.update({"status": "1"});
       status = "1";
+
+      var uuid = Uuid();
+      var pledgedGiftId = uuid.v4();
+
+      UserModel user  = await CurrentUser.getCurrentUser();
+      ref = db.ref().child("users/${user.uid}/pledgedGifts/$pledgedGiftId");
+      print(giftOwnerID);
+      await ref.set({
+        'id': id,
+        'name': name,
+        'category': category,
+        'price': price,
+        'description': description,
+        'status': status,
+        'eventId': eventId,
+        'giftRequesterId': giftOwnerID,
+        'pledgedGiftId': pledgedGiftId
+      });
+
+      return true;
     }catch(e){
       print("From pledgeGift");
       print(e);
+
+      return false;
     }
   }
 

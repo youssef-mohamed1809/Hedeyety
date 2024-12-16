@@ -16,7 +16,6 @@ class Authentication{
       );
 
       UserModel? user = await CurrentUser.getCurrentUser();
-      // print(user?.uid);
       Event.synchronizeFirebaseWithLocal();
       return true;
     } on FirebaseAuthException catch (e) {
@@ -44,7 +43,7 @@ class Authentication{
           username: username,
           email: email
       );
-
+      UserModel? x = await CurrentUser.getCurrentUser();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

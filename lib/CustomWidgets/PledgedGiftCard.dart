@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Model/PledgedGift.dart';
 
 import '../Pages/giftsDetailsPage.dart';
 
 class PledgedGiftCard extends StatelessWidget {
-  const PledgedGiftCard({super.key});
+  PledgedGift gift;
+  PledgedGiftCard({super.key, required this.gift});
 
   Widget build(BuildContext context) {
     return SizedBox(
@@ -14,11 +16,18 @@ class PledgedGiftCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Gift Name"),
+            Text("${gift.name}"),
             Row(
               children: [
-                TextButton(onPressed: (){}, child: Text("Mark as Bought")),
-                TextButton(onPressed: (){}, child: Text("Unpledge")),
+                TextButton(onPressed: (gift.status == "1")?(){
+                  // Change status to bought
+                  gift.updateStatus("2");
+                }:null, child: Text("Mark as Bought")),
+
+                TextButton(onPressed: (gift.status == "1")?(){
+                  // Unpledge
+                  gift.updateStatus("0");
+                }:null, child: Text("Unpledge")),
               ],
             )
           ],
