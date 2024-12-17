@@ -31,6 +31,9 @@ class Event{
     var db = RealTimeDatabase.getInstance();
     var ref = db.ref().child('users/$id/events/');
     var snapshot = await ref.get();
+    if(snapshot.value == null){
+      return;
+    }
     var data = snapshot.value as Map;
     for (var entry in data.entries) {
       var eventDetails = entry.value;

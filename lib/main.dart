@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Model/RTdb.dart';
 import 'package:hedeyety/Pages/eventCreationPage.dart';
 import 'package:hedeyety/Pages/loginPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
@@ -13,6 +14,7 @@ import 'package:hedeyety/Pages/giftCreationPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

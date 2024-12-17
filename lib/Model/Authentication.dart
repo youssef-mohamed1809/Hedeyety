@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/Model/Event.dart';
 import 'package:hedeyety/Model/LocalDB.dart';
+import 'package:hedeyety/Model/RTdb.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'UserModel.dart';
@@ -17,6 +18,7 @@ class Authentication{
 
       UserModel? user = await CurrentUser.getCurrentUser();
       Event.synchronizeFirebaseWithLocal();
+      // RealTimeDatabase.listenForUpdates();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -44,6 +46,7 @@ class Authentication{
           email: email
       );
       UserModel? x = await CurrentUser.getCurrentUser();
+      // RealTimeDatabase.listenForUpdates();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
