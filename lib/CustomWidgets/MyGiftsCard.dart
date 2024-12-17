@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/Model/Gift.dart';
+import 'package:hedeyety/Pages/giftEditingPage.dart';
 import 'package:hedeyety/Pages/giftsDetailsPage.dart';
 
 //pledged => 1, blue
@@ -54,7 +55,9 @@ class MyGiftsCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextButton(
-                      onPressed: (gift.status == "1" || gift.status == "2")?null:() {},
+                      onPressed: (gift.status == "1" || gift.status == "2")?null:() async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditGiftPage(gift: gift)));
+                      },
                       child: const Text("Edit", textAlign: TextAlign.center), // Centering the button
                     ),
                   ),

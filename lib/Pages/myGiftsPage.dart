@@ -12,7 +12,7 @@ class GiftsPage extends StatelessWidget {
 
   Future getMyGifts() async{
       var gifts = await Gift.getLocalGifts(-1);
-      print(gifts);
+      // print(gifts);
       return gifts;
   }
 

@@ -1,3 +1,4 @@
+
 import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Model/RTdb.dart';
@@ -213,10 +214,12 @@ class Event{
     }
 
     var ref = db.ref().child('users/$userID/events/eventN${id}');
+    published = 1;
     await ref.set(this.toMap());
     for(var gift in events_gifts_maps) {
       var ref = db.ref().child(
           'users/$userID/events/eventN${id}/gifts/giftN${gift['id']}');
+
       await ref.set(gift);
     }
 
@@ -225,7 +228,7 @@ class Event{
     await updateEvent();
 
   }
-  Future<void> updateEvent() async{
+  Future updateEvent() async{
     var db = await LocalDB.getInstance();
     db.update(
         'events',
@@ -234,8 +237,43 @@ class Event{
         whereArgs: [id]
     );
 
-    // if(published == 1){
-    //   publishEvent();
-    // }
+
+    if(published == 1){
+      var userID = await UserModel.getCurrentUserUID();
+      db = RealTimeDatabase.getInstance();
+      var ref = db.ref().child("/users/$userID/events/eventN${id}");
+      ref.update({
+        "date": "${date!.year}-${date!.month}-${date!.day}",
+        "description": description,
+        "location": location,
+        "name": name,
+      });
+
+    }
   }
+
+  Future deleteEvent() async{
+    var db = await LocalDB.getInstance();
+    await db.delete(
+        'events',
+        where: 'id = ?',
+        whereArgs: [id]
+    );
+
+    await db.delete(
+        'gifts',
+        where: 'event_id = ?',
+        whereArgs: [id]
+    );
+
+    if(published == 1){
+      var userID = await UserModel.getCurrentUserUID();
+      db = RealTimeDatabase.getInstance();
+      var ref = db.ref().child("/users/$userID/events/eventN${id}");
+
+      ref.remove();
+    }
+
+  }
+
 }

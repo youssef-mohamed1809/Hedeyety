@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/Model/Event.dart';
+import 'package:hedeyety/Pages/eventEditingPage.dart';
 import 'package:hedeyety/Pages/myEventDetailsPage.dart';
 
 class MyEventCard extends StatefulWidget {
@@ -40,8 +41,9 @@ class _MyEventCardState extends State<MyEventCard> {
                       children: [
                         ElevatedButton(
                             onPressed: () async {
-                              widget.event.name = "ello";
-                              await widget.event.updateEvent();
+                              // widget.event.name = "ello";
+                              // await widget.event.updateEvent();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditEventPage(event: widget.event)));
                             }, child: const Text("Edit")),
                         const SizedBox(width: 10),
                         ElevatedButton(

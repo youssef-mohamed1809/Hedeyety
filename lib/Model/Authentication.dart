@@ -18,7 +18,7 @@ class Authentication{
 
       UserModel? user = await CurrentUser.getCurrentUser();
       Event.synchronizeFirebaseWithLocal();
-      // RealTimeDatabase.listenForUpdates();
+      RealTimeDatabase.listenForUpdates();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -46,7 +46,7 @@ class Authentication{
           email: email
       );
       UserModel? x = await CurrentUser.getCurrentUser();
-      // RealTimeDatabase.listenForUpdates();
+      RealTimeDatabase.listenForUpdates();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

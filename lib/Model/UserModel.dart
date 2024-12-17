@@ -130,12 +130,12 @@ class UserModel {
     }
 
     var status = await _add_a_friend(uid, friend_id);
-    print("status1: $status");
+    // print("status1: $status");
     if (!status) {
       return status;
     }
     status = await _add_a_friend(friend_id, uid);
-    print("Status2: $status");
+    // print("Status2: $status");
     return status;
   }
   Future<bool> _add_a_friend(user_id, friend_id) async {
@@ -146,7 +146,6 @@ class UserModel {
 
       try {
         var snapshot = await ref.get();
-        print("");
         if (snapshot.exists) {
           Map friends = snapshot.value as Map;
 

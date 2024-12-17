@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/Model/RTdb.dart';
 import 'package:hedeyety/Model/UserModel.dart';
@@ -59,6 +60,28 @@ class Gift{
           conflictAlgorithm: ConflictAlgorithm.replace
       );
     }
+
+    // var res = await db.rawQuery("select published from events where id = ${event_id}");
+    //
+    // if(res[0]["published"] == 1){
+    //
+    //   var res = await db.rawQuery("select id from gifts where id = ${event_id} and name = ${name}");
+    //   var userID = UserModel.getCurrentUserUID();
+    //   db = RealTimeDatabase.getInstance();
+    //   var ref = db.ref().child(
+    //       'users/$userID/events/eventN$event_id/gifts/giftN${res[0]['id']}');
+    //
+    //   await ref.set({
+    //     'id': res[0]['id'],
+    //     'name': name,
+    //     'description': description,
+    //     'price': price,
+    //     'category': category,
+    //     'status': status,
+    //     'event_id': event_id,
+    //   });
+    // }
+
   }
   static getLocalGifts(event_id) async {
     var db = await LocalDB.getInstance();
@@ -132,7 +155,7 @@ class Gift{
 
       UserModel user  = await CurrentUser.getCurrentUser();
       ref = db.ref().child("users/${user.uid}/pledgedGifts/$pledgedGiftId");
-      print(giftOwnerID);
+      // print(giftOwnerID);
       await ref.set({
         'id': id,
         'name': name,
@@ -153,5 +176,56 @@ class Gift{
       return false;
     }
   }
+
+
+  Future editGift() async {
+      var db = await LocalDB.getInstance();
+      db.update(
+          'gifts',
+          this.toMap(),
+          where: 'id = ?',
+          whereArgs: [id]
+      );
+
+      var res = await db.rawQuery("select event_id from gifts where id = ${id}");
+      print(res);
+      var event_id = res[0]["event_id"];
+      res = await db.rawQuery("select published from events where id = ${event_id}");
+
+      if(res[0]["published"] == 1){
+            var userID = await UserModel.getCurrentUserUID();
+            db = RealTimeDatabase.getInstance();
+            var ref = db.ref().child("/users/$userID/events/eventN${event_id}/gifts/giftN${id}");
+            ref.update({
+              "category": category,
+              "description": description,
+              "name": name,
+              "price": price,
+            });
+      }
+  }
+
+  Future deleteGift() async {
+    var db = await LocalDB.getInstance();
+    db.delete(
+        'gifts',
+        where: 'id = ?',
+        whereArgs: [id]
+    );
+
+    var res = await db.rawQuery("select event_id from gifts where id = ${id}");
+    print(res);
+    var event_id = res[0]["event_id"];
+    res = await db.rawQuery("select published from events where id = ${event_id}");
+
+    if(res[0]["published"] == 1){
+      var userID = await UserModel.getCurrentUserUID();
+      db = RealTimeDatabase.getInstance();
+      var ref = db.ref().child("/users/$userID/events/eventN${event_id}/giftN${id}");
+      ref.remove();
+    }
+
+  }
+
 
 }
