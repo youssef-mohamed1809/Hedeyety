@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hedeyety/Model/RTdb.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hedeyety/Pages/eventCreationPage.dart';
 import 'package:hedeyety/Pages/loginPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
@@ -11,7 +11,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hedeyety/Pages/signupPage.dart';
 import 'package:hedeyety/Pages/giftCreationPage.dart';
 
+Future<void> _initializeNotifications() async {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  var androidInitialize = AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initializationSettings = InitializationSettings(
+      android: androidInitialize);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+}
+
 void main() async {
+  // await _initializeNotifications();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 

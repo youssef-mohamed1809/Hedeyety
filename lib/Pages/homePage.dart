@@ -46,6 +46,9 @@ class HomePage extends StatelessWidget {
               builder: (BuildContext, snapshot) {
                 if (snapshot.hasData) {
                   var data = snapshot.data;
+                  if(data.isEmpty){
+                    return Center(child: Text("You have no friends yet"));
+                  }
                   return ListView.builder(
                       itemCount: data.length,
                       itemBuilder: (BuildContext, index) {

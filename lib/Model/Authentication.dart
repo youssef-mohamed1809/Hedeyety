@@ -3,9 +3,10 @@ import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/Model/Event.dart';
 import 'package:hedeyety/Model/LocalDB.dart';
 import 'package:hedeyety/Model/RTdb.dart';
+import 'package:hedeyety/Model/SynchronizationAndListeners.dart';
+import 'package:hedeyety/Model/UserModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'UserModel.dart';
 
 class Authentication{
 
@@ -17,8 +18,8 @@ class Authentication{
       );
 
       UserModel? user = await CurrentUser.getCurrentUser();
-      Event.synchronizeFirebaseWithLocal();
-      RealTimeDatabase.listenForUpdates();
+      await SynchronizationAndListeners.synchronizeFirebaseWithLocal();
+      await SynchronizationAndListeners.listenForStatusChangesOfAlreadyCreatedGifts();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -46,7 +47,8 @@ class Authentication{
           email: email
       );
       UserModel? x = await CurrentUser.getCurrentUser();
-      RealTimeDatabase.listenForUpdates();
+
+      await SynchronizationAndListeners.listenForStatusChangesOfAlreadyCreatedGifts();
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -67,6 +69,7 @@ class Authentication{
     String dbsPath = await getDatabasesPath();
     String dbPath = join(dbsPath, 'hedeyety.db');
     await deleteDatabase(dbPath);
+    SynchronizationAndListeners.removeAllListeners();
     LocalDB.db = null;
 
   }

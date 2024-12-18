@@ -167,12 +167,16 @@ class UserModel {
     }
     return false;
   }
-  Future<List> getMyFriendsIDs() async {
+
+  Future<List?> getMyFriendsIDs() async {
     var db = RealTimeDatabase.getInstance();
     var ref = db.ref().child("users/$uid/friends");
     try {
       var snapshot = await ref.get();
       var data = snapshot.value;
+      if(data == null){
+        return [];
+      }
       return data.keys.toList();
     } catch (e) {
       print("An error occurred in getMyFriendsIDs");

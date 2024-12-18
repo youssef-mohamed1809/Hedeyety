@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/Model/RTdb.dart';
+import 'package:hedeyety/Model/SynchronizationAndListeners.dart';
 import 'package:hedeyety/Model/UserModel.dart';
 import 'package:uuid/uuid.dart';
 
@@ -52,32 +53,15 @@ class Gift{
         var userID = await UserModel.getCurrentUserUID();
         db = await RealTimeDatabase.getInstance();
         var ref = db.ref().child("/users/$userID/events/eventN${event_id}/gifts/giftN${gid}");
-        print("AANA HENA");
         await ref.set({
-          'id': gid,
+          'id': gid.toString(),
           'name': name,
           'category': category,
           'price': price,
           'description': description,
-          'status': 0
+          'status': "0"
         });
-
-        ref.onChildChanged.listen((event) async {
-          if(event.snapshot.key == "status"){
-            print("Status Changed");
-            print("GIDJKSKFJB<: $gid");
-            var db = await LocalDB.getInstance();
-            await db.update(
-              'gifts',
-              {
-                "status": event.snapshot.value
-              },
-              where: 'id = ?',
-              whereArgs: [gid]
-            );
-          }
-        });
-
+        SynchronizationAndListeners.listenForStatusChanges(ref, gid.toString());
       }
 
     }else{

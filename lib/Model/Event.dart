@@ -2,6 +2,7 @@
 import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Model/RTdb.dart';
+import 'package:hedeyety/Model/SynchronizationAndListeners.dart';
 import 'package:hedeyety/Model/UserModel.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -27,42 +28,6 @@ class Event{
     };
   }
 
-  static synchronizeFirebaseWithLocal() async {
-    var id = UserModel.getCurrentUserUID();
-    var db = RealTimeDatabase.getInstance();
-    var ref = db.ref().child('users/$id/events/');
-    var snapshot = await ref.get();
-    if(snapshot.value == null){
-      return;
-    }
-    var data = snapshot.value as Map;
-    for (var entry in data.entries) {
-      var eventDetails = entry.value;
-        await createEvent(
-          eventDetails['id'],
-          eventDetails['name'],
-          DateTime.parse(eventDetails['date']),
-          eventDetails['location'],
-          eventDetails['description'],
-        );
-        if(eventDetails['gifts'] != null){
-          for(var gift_entry in eventDetails['gifts'].entries){
-            var giftDetails = gift_entry.value;
-            // print(giftDetails);
-            await Gift.createGift(
-                giftDetails['id'],
-                giftDetails['name'],
-                giftDetails['description'],
-                giftDetails['category'],
-                giftDetails['price'],
-                eventDetails['id'],
-                status: giftDetails['status']
-            );
-          }
-        }
-    }
-
-  }
   static createEvent(id, name, DateTime date, location, description) async{
     var db = await LocalDB.getInstance();
     if(id == -1){
@@ -222,20 +187,21 @@ class Event{
 
       await ref.set(gift);
       ref = db.ref("/users/${userID}/events/eventN${id}/gifts/${gift['id']}");
-      ref.onChildChanged.listen((event) async {
-        if(event.snapshot.key == "status"){
-          print("Status Changed");
-          var db = LocalDB.getInstance();
-          await db.update(
-              'gifts',
-              {
-                "status": event.snapshot.value
-              },
-              where: 'id = ?',
-              whereArgs: [gift['id']]
-          );
-        }
-      });
+      SynchronizationAndListeners.listenForStatusChanges(ref, gift['id']);
+      // ref.onChildChanged.listen((event) async {
+      //   if(event.snapshot.key == "status"){
+      //     print("Status Changed");
+      //     var db = LocalDB.getInstance();
+      //     await db.update(
+      //         'gifts',
+      //         {
+      //           "status": event.snapshot.value
+      //         },
+      //         where: 'id = ?',
+      //         whereArgs: [gift['id']]
+      //     );
+      //   }
+      // });
     }
 
 
