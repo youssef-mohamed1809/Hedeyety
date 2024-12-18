@@ -30,10 +30,10 @@ class Gift{
     };
   }
 
-  static createGift(id, name, description, category, price, event_id, {int? status}) async {
+  static createGift(id, name, description, category, price, event_id, {String? status}) async {
     var db = await LocalDB.getInstance();
     if(id == -1){
-      await db.insert(
+      int gid = await db.insert(
           'gifts',
           {
             'name': name,
@@ -45,6 +45,41 @@ class Gift{
           },
           conflictAlgorithm: ConflictAlgorithm.replace
       );
+
+      var res = await db.rawQuery("select published from events where id = ${event_id}");
+
+      if(res[0]["published"] == 1){
+        var userID = await UserModel.getCurrentUserUID();
+        db = await RealTimeDatabase.getInstance();
+        var ref = db.ref().child("/users/$userID/events/eventN${event_id}/gifts/giftN${gid}");
+        print("AANA HENA");
+        await ref.set({
+          'id': gid,
+          'name': name,
+          'category': category,
+          'price': price,
+          'description': description,
+          'status': 0
+        });
+
+        ref.onChildChanged.listen((event) async {
+          if(event.snapshot.key == "status"){
+            print("Status Changed");
+            print("GIDJKSKFJB<: $gid");
+            var db = await LocalDB.getInstance();
+            await db.update(
+              'gifts',
+              {
+                "status": event.snapshot.value
+              },
+              where: 'id = ?',
+              whereArgs: [gid]
+            );
+          }
+        });
+
+      }
+
     }else{
       await db.insert(
           'gifts',
@@ -54,33 +89,18 @@ class Gift{
             'description': description,
             'price': price,
             'category': category,
-            'status': status,
+            'status': status??"0",
             'event_id': event_id,
           },
           conflictAlgorithm: ConflictAlgorithm.replace
       );
+
+
+
+
+
     }
 
-    // var res = await db.rawQuery("select published from events where id = ${event_id}");
-    //
-    // if(res[0]["published"] == 1){
-    //
-    //   var res = await db.rawQuery("select id from gifts where id = ${event_id} and name = ${name}");
-    //   var userID = UserModel.getCurrentUserUID();
-    //   db = RealTimeDatabase.getInstance();
-    //   var ref = db.ref().child(
-    //       'users/$userID/events/eventN$event_id/gifts/giftN${res[0]['id']}');
-    //
-    //   await ref.set({
-    //     'id': res[0]['id'],
-    //     'name': name,
-    //     'description': description,
-    //     'price': price,
-    //     'category': category,
-    //     'status': status,
-    //     'event_id': event_id,
-    //   });
-    // }
 
   }
   static getLocalGifts(event_id) async {

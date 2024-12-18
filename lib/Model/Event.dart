@@ -41,7 +41,7 @@ class Event{
         await createEvent(
           eventDetails['id'],
           eventDetails['name'],
-          eventDetails['date'],
+          DateTime.parse(eventDetails['date']),
           eventDetails['location'],
           eventDetails['description'],
         );
@@ -56,21 +56,21 @@ class Event{
                 giftDetails['category'],
                 giftDetails['price'],
                 eventDetails['id'],
-                status: int.parse(giftDetails['status'])
+                status: giftDetails['status']
             );
           }
         }
     }
 
   }
-  static createEvent(id, name, date, location, description) async{
+  static createEvent(id, name, DateTime date, location, description) async{
     var db = await LocalDB.getInstance();
     if(id == -1){
       await db.insert(
           'events',
           {
             'name': name,
-            'date': date,
+            'date': "${date.year}-${date.month}-${date.day}",
             'location': location,
             'description': description,
             'published': 0
@@ -83,7 +83,7 @@ class Event{
           {
             'id': id,
             'name': name,
-            'date': date,
+            'date': "${date.year}-${date.month}-${date.day}",
             'location': location,
             'description': description,
             'published': 1
@@ -221,6 +221,21 @@ class Event{
           'users/$userID/events/eventN${id}/gifts/giftN${gift['id']}');
 
       await ref.set(gift);
+      ref = db.ref("/users/${userID}/events/eventN${id}/gifts/${gift['id']}");
+      ref.onChildChanged.listen((event) async {
+        if(event.snapshot.key == "status"){
+          print("Status Changed");
+          var db = LocalDB.getInstance();
+          await db.update(
+              'gifts',
+              {
+                "status": event.snapshot.value
+              },
+              where: 'id = ?',
+              whereArgs: [gift['id']]
+          );
+        }
+      });
     }
 
 
