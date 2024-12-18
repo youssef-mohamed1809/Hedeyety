@@ -99,6 +99,7 @@ class Gift{
 
     List<Map> res = await db.rawQuery(query);
     List gifts = [];
+    List event_ids = [];
 
     res.forEach((row){
 
@@ -111,13 +112,14 @@ class Gift{
             price: row['price'].toString(),
             status: row['status'].toString()
         ));
+        event_ids.add(row['event_id']);
       }catch(e){
         print("From getLocalGifts");
         print(e);
       }
     });
 
-    return gifts;
+    return [gifts, event_ids];
   }
   static getFriendGifts(friendId, eventId) async{
     var db = RealTimeDatabase.getInstance();

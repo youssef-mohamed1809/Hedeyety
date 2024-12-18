@@ -8,12 +8,12 @@ import '../CustomWidgets/CustomAppBar.dart';
 
 
 class GiftsPage extends StatelessWidget {
-  const GiftsPage({super.key});
-
+  GiftsPage({super.key});
+  late List event_ids = [];
   Future getMyGifts() async{
-      var gifts = await Gift.getLocalGifts(-1);
-      // print(gifts);
-      return gifts;
+      var gifts_and_eventIDs = await Gift.getLocalGifts(-1);
+      event_ids = gifts_and_eventIDs[1];
+      return gifts_and_eventIDs[0];
   }
 
   @override
@@ -35,12 +35,13 @@ class GiftsPage extends StatelessWidget {
                     return ListView.builder(
                         itemCount: data.length,
                         itemBuilder: (BuildContext, index){
-                          return MyGiftsCard(gift: data[index]);
+                          return MyGiftsCard(gift: data[index], event_id: (index < event_ids.length)?event_ids[index].toString():"",);
                     });
                   }
 
                 }else if(snapshot.hasError){
-                  return Center(child: Text("An error has occurred"),);
+                  print(snapshot.error);
+                  return Center(child: Text("An erro has occurred"),);
                 }else{
                   return Center(child: CircularProgressIndicator(),);
                 }
