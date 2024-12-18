@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Pages/friendDetailsPage.dart';
 
 
 class FriendSearchDelegate extends SearchDelegate<String>{
 
   List<String> myFriends;
-  FriendSearchDelegate({required this.myFriends});
+  List<String> myFriendIDs;
+  FriendSearchDelegate({required this.myFriends, required this.myFriendIDs});
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -38,6 +40,10 @@ class FriendSearchDelegate extends SearchDelegate<String>{
           title: Text(searchResults[index]),
           onTap: () {
             // Handle the selected search result.
+            print("myFriends");
+            int i = myFriends.indexOf(searchResults[index]);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetailsPage(id: myFriendIDs[i])));
+
             close(context, searchResults[index]);
           },
         );
@@ -60,6 +66,9 @@ class FriendSearchDelegate extends SearchDelegate<String>{
           title: Text(suggestionList[index]),
           onTap: () {
             query = suggestionList[index];
+            // print(myFriends);
+            int i = myFriends.indexOf(suggestionList[index]);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetailsPage(id: myFriendIDs[i])));
             // Show the search results based on the selected suggestion.
           },
         );

@@ -22,11 +22,13 @@ class HomePage extends StatelessWidget {
       friendsAndUpcomingEvents
           .add({'name': name, 'upcoming_events': num_of_events, 'id': friend});
       myFriends.add(name);
+      myFriendIDs.add(friend);
     }
     return friendsAndUpcomingEvents;
   }
 
   HomePage({super.key});
+  List<String> myFriendIDs = [];
   List<String> myFriends = [];
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   showSearch(
                       context: context,
-                      delegate: FriendSearchDelegate(myFriends: myFriends));
+                      delegate: FriendSearchDelegate(myFriends: myFriends, myFriendIDs: myFriendIDs));
                 },
                 icon: const Icon(Icons.search))),
         body: Container(
