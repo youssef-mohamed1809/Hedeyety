@@ -10,7 +10,7 @@ class EventDetailsPage extends StatelessWidget {
 
   Future getGifts() async {
     List res = await Gift.getLocalGifts(event.id);
-    return res;
+    return res[0];
   }
 
   @override

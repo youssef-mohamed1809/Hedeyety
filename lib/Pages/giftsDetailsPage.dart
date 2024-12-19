@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
+import 'package:hedeyety/Model/Gift.dart';
 
 import '../CustomWidgets/CustomAppBar.dart';
 
-class GiftDetailsPage extends StatelessWidget {
-  GiftDetailsPage({super.key});
+class GiftDetailsPage extends StatefulWidget {
+  Gift gift;
+
+  GiftDetailsPage({super.key, required this.gift});
+
+  @override
+  State<GiftDetailsPage> createState() => _GiftDetailsPageState();
+}
+
+class _GiftDetailsPageState extends State<GiftDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +26,12 @@ class GiftDetailsPage extends StatelessWidget {
           child:
               Column(
                 children: [
-                  CircleAvatar(radius: 70,),
+                  (widget.gift.imgURL != null && widget.gift.imgURL != "")?SizedBox(height: 300, width:300,child: Image.network(widget.gift.imgURL as String)):Text(""),
                   SizedBox(height: 20,),
-                  Text("Great Dane", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                  Text(widget.gift.name as String, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+                  Text("Price: ${widget.gift.price as String}"),
                   SizedBox(height: 20),
-                  Text("I want a Great Dane puppy", style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17))
+                  Text(widget.gift.description as String, style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17)),
                 ],
               ),
         ),

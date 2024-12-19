@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/Model/Event.dart';
 import 'package:hedeyety/Model/Gift.dart';
+import 'package:hedeyety/Model/ImageHandler.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateGiftPage extends StatefulWidget {
   CreateGiftPage({super.key});
@@ -9,6 +11,7 @@ class CreateGiftPage extends StatefulWidget {
   String? selected_value;
   String? selected_category;
   String? selected_category_id;
+  String? image_path;
 
   @override
   State<CreateGiftPage> createState() => _CreateGiftPageState();
@@ -148,7 +151,19 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                   height: 20,
                                 ),
                                 ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      final picker = ImagePicker();
+                                      final image = await picker.pickImage(source: ImageSource.gallery);
+                                      if(image != null){
+                                        print(image.path);
+                                        widget.image_path = image.path;
+                                      }
+                                    }, child: Text("Choose an Image")),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () async {
                                       var event_id = -1;
                                       for (int i = 0; i < events.length; i++) {
                                         if (events[i]['name'] ==
@@ -156,6 +171,9 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                           event_id = events[i]['id'];
                                         }
                                       }
+
+                                      String? url_acctual = await ImageHandler.uploadImage(widget.image_path as String);
+
                                       // print(event_id);
                                       Gift.createGift(
                                           -1,
@@ -163,11 +181,14 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                           description_controller.text,
                                           widget.selected_category_id,
                                           price_controller.text,
-                                          event_id);
+                                          event_id,
+                                        imgURL: url_acctual
+                                      );
 
                                       Navigator.pop(context);
                                     },
-                                    child: Text("Add Gift"))
+                                    child: Text("Add Gift")),
+
                               ],
                             ),
                           ),

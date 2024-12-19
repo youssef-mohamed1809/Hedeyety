@@ -24,6 +24,7 @@ class LocalDB {
             'price REAL NOT NULL,'
             'event_id INT NOT NULL,'
             'status INT NOT NULL,'
+            'imgURL TEXT,'
             'FOREIGN KEY (event_id) REFERENCES events(id)'
             ');');
         await db.execute('CREATE TABLE category('

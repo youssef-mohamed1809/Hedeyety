@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedeyety/Model/Gift.dart';
 import 'package:hedeyety/Model/PledgedGift.dart';
 
 import '../Pages/giftsDetailsPage.dart';
@@ -11,7 +12,7 @@ class PledgedGiftCard extends StatelessWidget {
     return SizedBox(
       child: TextButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage(gift: gift as Gift)));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

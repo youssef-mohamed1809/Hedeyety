@@ -19,7 +19,7 @@ class _GiftCardState extends State<GiftCard> {
     return SizedBox(
       child: TextButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage(gift: widget.gift)));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

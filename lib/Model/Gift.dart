@@ -17,8 +17,9 @@ class Gift{
   String? pledged;
   String? name;
   String? status;
+  String? imgURL;
 
-  Gift({this.id, this.name, this.description, this.category, this.price, this.status});
+  Gift({this.id, this.name, this.description, this.category, this.price, this.status, this.imgURL});
 
   Map<String, Object?> toMap(){
     return {
@@ -27,11 +28,12 @@ class Gift{
       'category': category,
       'price': price,
       'description': description,
-      'status': status
+      'status': status,
+      'imgURL': imgURL
     };
   }
 
-  static createGift(id, name, description, category, price, event_id, {String? status}) async {
+  static createGift(id, name, description, category, price, event_id, {String? status, String? imgURL}) async {
     var db = await LocalDB.getInstance();
     if(id == -1){
       int gid = await db.insert(
@@ -43,6 +45,7 @@ class Gift{
             'category': category,
             'status': 0,
             'event_id': event_id,
+            'imgURL': imgURL
           },
           conflictAlgorithm: ConflictAlgorithm.replace
       );
@@ -59,7 +62,8 @@ class Gift{
           'category': category,
           'price': price,
           'description': description,
-          'status': "0"
+          'status': "0",
+          'imgURL': imgURL
         });
         SynchronizationAndListeners.listenForStatusChanges(ref, gid.toString());
       }
@@ -110,7 +114,8 @@ class Gift{
           description: row['description'],
             category: row['category'].toString(),
             price: row['price'].toString(),
-            status: row['status'].toString()
+            status: row['status'].toString(),
+            imgURL: row['imgURL']
         ));
         event_ids.add(row['event_id']);
       }catch(e){

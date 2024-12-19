@@ -41,7 +41,8 @@ class SynchronizationAndListeners{
               giftDetails['category'],
               giftDetails['price'],
               eventDetails['id'],
-              status: giftDetails['status']
+              status: giftDetails['status'],
+              imgURL: giftDetails['imgURL']
           );
         }
       }
@@ -53,11 +54,12 @@ class SynchronizationAndListeners{
     var db = RealTimeDatabase.getInstance();
     UserModel user = await CurrentUser.getCurrentUser();
     var ref = db.ref('/users/${user.uid}/friends');
-    ref.onChildAdded.listen((event) async {
+    StreamSubscription sub = ref.onChildAdded.listen((event) async {
       print("A friend has added you");
       await showNotification("You have a new Friend!");
     });
 
+    _subscriptions.add(sub);
 
     ref = db.ref('/users/${user.uid}/events');
     var snapshot = await ref.get();
@@ -98,33 +100,30 @@ class SynchronizationAndListeners{
 
 
   static listenForStatusChanges(DatabaseReference? ref, String gid) async {
-    // ref.onChildChanged.listen((event) async {
-    //
-    //   if(event.snapshot.key == "status"){
-    //     print("hi");
-    //     if(event.snapshot.value == "2"){
-    //       await _showNotification("A friend has bought a gift!");
-    //     }else if(event.snapshot.value == "1"){
-    //       await _showNotification("A friend has pledged a gift");
-    //     }
-    //
-    //     print("bye");
-    //     print("Status Changed");
-    //     // print("GIDJKSKFJB<: $gid");
-    //     var db = await LocalDB.getInstance();
-    //     await db.update(
-    //         'gifts',
-    //         {
-    //           "status": event.snapshot.value
-    //         },
-    //         where: 'id = ?',
-    //         whereArgs: [gid]
-    //     );
-    //   }
-    // });
-    //Listen and send FCM Notification
-    removeAllListeners();
-    await listenForStatusChangesOfAlreadyCreatedGifts();
+    StreamSubscription sub = ref!.onChildChanged.listen((event) async {
+      if(event.snapshot.key == "status"){
+            print("hi");
+            if(event.snapshot.value == "2"){
+              await showNotification("A friend has bought a gift!");
+            }else if(event.snapshot.value == "1"){
+              await showNotification("A friend has pledged a gift");
+            }
+
+            print("bye");
+            print("Status Changed");
+            // print("GIDJKSKFJB<: $gid");
+            var db = await LocalDB.getInstance();
+            await db.update(
+                'gifts',
+                {
+                  "status": event.snapshot.value
+                },
+                where: 'id = ?',
+                whereArgs: [gid]
+            );
+          }
+    });
+    _subscriptions.add(sub);
   }
 
   static removeAllListeners(){

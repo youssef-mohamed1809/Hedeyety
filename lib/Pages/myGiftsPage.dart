@@ -20,7 +20,8 @@ class GiftsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-          button: IconButton(onPressed: (){}, icon: Icon(Icons.filter_alt))
+          button: IconButton(onPressed: (){
+          }, icon: Icon(Icons.filter_alt))
       ),
       body: Container(
           margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 30),

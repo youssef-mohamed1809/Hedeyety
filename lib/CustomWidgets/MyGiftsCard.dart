@@ -76,7 +76,7 @@ class MyGiftsCard extends StatelessWidget {
                 SizedBox(
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GiftDetailsPage(gift: gift)));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
