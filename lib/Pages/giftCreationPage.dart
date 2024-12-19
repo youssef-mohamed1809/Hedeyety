@@ -6,6 +6,10 @@ import 'package:hedeyety/Model/Gift.dart';
 class CreateGiftPage extends StatefulWidget {
   CreateGiftPage({super.key});
 
+  String? selected_value;
+  String? selected_category;
+  String? selected_category_id;
+
   @override
   State<CreateGiftPage> createState() => _CreateGiftPageState();
 }
@@ -14,14 +18,24 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
   GlobalKey<FormState> key = GlobalKey();
 
   List events = [];
+  var categories = [];
+  List category_names = [];
 
   TextEditingController name_controller = TextEditingController();
   TextEditingController price_controller = TextEditingController();
   TextEditingController description_controller = TextEditingController();
 
-  String? selected_value;
+
 
   Future getEventNames() async {
+    categories = await Gift.getGiftCategories();
+    category_names =
+        categories.map((category) => category['category'] as String).toList();
+
+    print(categories);
+    print("---");
+    print(category_names);
+
     var res = await Event.getUpcomingEventNames();
     events = res;
     var eventNames = [];
@@ -42,14 +56,16 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
           child: Column(
             children: [
               Text("Add a new Gift", style: TextStyle(fontSize: 30)),
-              SizedBox(height: 40, ),
+              SizedBox(
+                height: 40,
+              ),
               FutureBuilder(
                   future: getEventNames(),
                   builder: (BuildContext, snapshot) {
                     if (snapshot.hasData) {
                       List data = snapshot.data;
-                      if (selected_value == null && data.isNotEmpty) {
-                        selected_value = data[0];
+                      if (widget.selected_value == null && data.isNotEmpty) {
+                        widget.selected_value = data[0];
                       }
                       if (!data.isEmpty) {
                         return Center(
@@ -58,27 +74,63 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                               children: [
                                 TextFormField(
                                   controller: name_controller,
-                                  decoration: InputDecoration(hintText: "Name", border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30))),
+                                  decoration: InputDecoration(
+                                      hintText: "Name",
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
                                 ),
-                                const SizedBox(height: 20,),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 TextFormField(
                                   controller: price_controller,
                                   keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(hintText: "Price",border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30))),
+                                  decoration: InputDecoration(
+                                      hintText: "Price",
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
                                 ),
-                                const SizedBox(height: 20,),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 TextFormField(
                                   controller: description_controller,
-                                  decoration:
-                                      InputDecoration(hintText: "Description", border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30))),
+                                  decoration: InputDecoration(
+                                      hintText: "Description",
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
                                 ),
-                                const SizedBox(height: 20,),
+                                DropdownButton(
+                                    hint: Text("Choose a category"),
+                                    value: widget.selected_category,
+                                    items: category_names.map((name) {
+                                      return DropdownMenuItem(
+                                        child: Text(name),
+                                        value: name,
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        int id = 0;
+                                        for(var category in categories){
+                                          if(category['category'] == value){
+                                            id = category['id'];
+                                          }
+                                        }
+                                        widget.selected_category = value as String;
+                                        widget.selected_category_id = id.toString();
+
+                                      });
+                                    }),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 DropdownButton(
                                   hint: Text("Select an Event"),
-                                  value: selected_value,
+                                  value: widget.selected_value,
                                   items: data.map((name) {
                                     return DropdownMenuItem(
                                       child: Text(name),
@@ -87,19 +139,20 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                   }).toList(),
                                   onChanged: (value) {
                                     setState(() {
-                                      selected_value = value as String?;
+                                      widget.selected_value = value as String?;
                                     });
                                     // print(selected_value);
                                   },
                                 ),
-                                const SizedBox(height: 20,),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 ElevatedButton(
                                     onPressed: () {
                                       var event_id = -1;
-
-
                                       for (int i = 0; i < events.length; i++) {
-                                        if (events[i]['name'] == selected_value) {
+                                        if (events[i]['name'] ==
+                                            widget.selected_value) {
                                           event_id = events[i]['id'];
                                         }
                                       }
@@ -108,12 +161,11 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                           -1,
                                           name_controller.text,
                                           description_controller.text,
-                                          "",
+                                          widget.selected_category_id,
                                           price_controller.text,
                                           event_id);
 
                                       Navigator.pop(context);
-
                                     },
                                     child: Text("Add Gift"))
                               ],

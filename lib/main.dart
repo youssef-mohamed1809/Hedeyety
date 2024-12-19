@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hedeyety/Model/SynchronizationAndListeners.dart';
 import 'package:hedeyety/Pages/eventCreationPage.dart';
 import 'package:hedeyety/Pages/loginPage.dart';
 import 'package:hedeyety/Pages/myGiftsPage.dart';
@@ -71,6 +72,9 @@ class AuthWrapper extends StatelessWidget {
               body: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
+            SynchronizationAndListeners.listenForStatusChangesOfAlreadyCreatedGifts();
+            //   print("DONE");
+            // });
             Future.microtask(
                 () => Navigator.pushReplacementNamed(context, '/home'));
           } else {

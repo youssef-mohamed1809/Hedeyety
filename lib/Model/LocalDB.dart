@@ -26,10 +26,22 @@ class LocalDB {
             'status INT NOT NULL,'
             'FOREIGN KEY (event_id) REFERENCES events(id)'
             ');');
-        await db.execute('CREATE TABLE category_enum('
+        await db.execute('CREATE TABLE category('
             'id INTEGER PRIMARY KEY,'
             'category TEXT UNIQUE'
             ');');
+
+        await db.execute(
+          'INSERT INTO category (id, category) VALUES'
+            '(1, \'Clothing and Accessories\'),'
+            '(2, \'Electronics and Gadgets\'),'
+            '(3, \'Home and Living\'),'
+            '(4, \'Toys and Games\'),'
+            '(5, \'Books and Stationery\'),'
+            '(6, \'Personal Care and Wellness\'),'
+            '(7, \'Hobbies and Interests\'),'
+            '(8, \'Gift Cards\');'
+        );
       }, version: 1);
 
     return db;

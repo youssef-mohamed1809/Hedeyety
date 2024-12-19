@@ -233,5 +233,15 @@ class Gift{
 
   }
 
+  static getGiftCategories() async {
+    var db = await LocalDB.getInstance();
+    var res = await db.rawQuery("select * from category");
+    // var cats = [];
+    // res.forEach((cat){
+    //   cats.add(cat['category']);
+    // });
+    print(res);
+    return res;
+  }
 
 }
