@@ -51,7 +51,7 @@ class Gift{
       );
 
       var res = await db.rawQuery("select published from events where id = ${event_id}");
-
+      print(res);
       if(res[0]["published"] == 1){
         var userID = await UserModel.getCurrentUserUID();
         db = await RealTimeDatabase.getInstance();

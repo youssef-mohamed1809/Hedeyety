@@ -168,9 +168,12 @@ class Event{
     var userID = await UserModel.getCurrentUserUID();
     var db = RealTimeDatabase.getInstance();
     var gifts_obj  = await Gift.getLocalGifts(id);
+    gifts_obj = gifts_obj[0];
     var events_gifts_maps = [];
     try{
+      print("EL GIFTS: $gifts_obj");
       gifts_obj.forEach((gift){
+        print("EL GIFT: $gift");
         events_gifts_maps.add(gift.toMap());
       });
     }catch(e){
@@ -188,20 +191,6 @@ class Event{
       await ref.set(gift);
       ref = db.ref("/users/${userID}/events/eventN${id}/gifts/${gift['id']}");
       SynchronizationAndListeners.listenForStatusChanges(ref, gift['id']);
-      // ref.onChildChanged.listen((event) async {
-      //   if(event.snapshot.key == "status"){
-      //     print("Status Changed");
-      //     var db = LocalDB.getInstance();
-      //     await db.update(
-      //         'gifts',
-      //         {
-      //           "status": event.snapshot.value
-      //         },
-      //         where: 'id = ?',
-      //         whereArgs: [gift['id']]
-      //     );
-      //   }
-      // });
     }
 
 
