@@ -73,7 +73,7 @@ class SynchronizationAndListeners{
       for(var gift in gifts.keys){
         ref = db.ref("/users/${user.uid}/events/eventN${data[event]['id'].toString()}/gifts/$gift");
         var gid = data[event]['gifts'][gift]['id'];
-        print("EL GID: $gid");
+        // print("EL GID: $gid");
         StreamSubscription sub = ref.onChildChanged.listen((event) async {
           if(event.snapshot.key == "status"){
             if(event.snapshot.value == "2"){

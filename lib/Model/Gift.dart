@@ -249,4 +249,31 @@ class Gift{
     return res;
   }
 
+  static filterGifts(gifts, filters){
+    List filteredGifts = [];
+    for(var gift in gifts){
+        for(var filter in filters){
+          if(filter.toString() == gift.category) {
+            filteredGifts.add(gift);
+            break;
+
+          }
+        }
+    }
+    return filteredGifts;
+  }
+
+  static sortGiftsAlphabetically(gifts){
+    gifts.sort((a, b) {
+      return ((a.name as String) ?? '').compareTo((b.name as String) ?? '');
+    });    return gifts;
+  }
+
+  static getEventID(Gift gift) async {
+    var db = await LocalDB.getInstance();
+    var res = await db.rawQuery("select event_id from gifts where id = ${gift.id}");
+    // print(res);
+    return res[0]['event_id'];
+  }
+
 }

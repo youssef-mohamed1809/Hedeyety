@@ -185,4 +185,13 @@ class UserModel {
     }
   }
 
+  static updateProfilePIcture(imgPath) async {
+    var userID = await UserModel.getCurrentUserUID();
+    var db = RealTimeDatabase.getInstance();
+    var ref = db.ref().child("/users/$userID/");
+    ref.update({
+      'profilePicture': imgPath
+    });
+  }
+
 }
