@@ -13,6 +13,8 @@ class CreateGiftPage extends StatefulWidget {
   String? selected_category_id;
   String? image_path;
 
+  String image_message = "Choose an Image";
+
   @override
   State<CreateGiftPage> createState() => _CreateGiftPageState();
 }
@@ -27,8 +29,6 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
   TextEditingController name_controller = TextEditingController();
   TextEditingController price_controller = TextEditingController();
   TextEditingController description_controller = TextEditingController();
-
-
 
   Future getEventNames() async {
     categories = await Gift.getGiftCategories();
@@ -118,14 +118,15 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                     onChanged: (value) {
                                       setState(() {
                                         int id = 0;
-                                        for(var category in categories){
-                                          if(category['category'] == value){
+                                        for (var category in categories) {
+                                          if (category['category'] == value) {
                                             id = category['id'];
                                           }
                                         }
-                                        widget.selected_category = value as String;
-                                        widget.selected_category_id = id.toString();
-
+                                        widget.selected_category =
+                                            value as String;
+                                        widget.selected_category_id =
+                                            id.toString();
                                       });
                                     }),
                                 const SizedBox(
@@ -153,12 +154,69 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                 ElevatedButton(
                                     onPressed: () async {
                                       final picker = ImagePicker();
-                                      final image = await picker.pickImage(source: ImageSource.gallery);
-                                      if(image != null){
-                                        print(image.path);
-                                        widget.image_path = image.path;
+                                      //
+                                      // if(image != null){
+                                      //   print(image.path);
+                                      //   widget.image_path = image.path;
+                                      // }
+
+                                      XFile? image;
+                                      await showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return SafeArea(
+                                              child: Wrap(
+                                                children: [
+                                                  ListTile(
+                                                    title: Text("Camera"),
+                                                    leading:
+                                                        Icon(Icons.camera_alt),
+                                                    onTap: () async {
+                                                      image = await picker
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .camera);
+                                                      widget.image_path = image!.path;
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  ListTile(
+                                                    title: Text("Gallery"),
+                                                    leading: Icon(Icons.photo),
+                                                    onTap: () async {
+                                                      image = await picker
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .gallery);
+                                                      // print("EL PATHHHH:   ${image!.path}");
+                                                      widget.image_path = image!.path;
+                                                      Navigator.pop(context);
+                                                      },
+
+                                                  )
+                                                ],
+                                              ),
+                                            );
+                                          });
+
+                                      print("SUIII: ${image!.path}");
+                                      if (image != null) {
+                                        widget.image_message = "Image Selected";
+                                        print(image!.path);
+
+                                      } else {
+                                        widget.image_message =
+                                            "Select an Image";
+                                        widget.image_path = null;
                                       }
-                                    }, child: Text("Choose an Image")),
+                                      setState(() {
+
+                                      });
+                                    },
+
+                                    child: Text(widget.image_message)),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -172,7 +230,9 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                         }
                                       }
 
-                                      String? url_acctual = await ImageHandler.uploadImage(widget.image_path as String);
+                                      String? url_acctual =
+                                          await ImageHandler.uploadImage(
+                                              widget.image_path as String);
 
                                       // print(event_id);
                                       Gift.createGift(
@@ -182,13 +242,11 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                           widget.selected_category_id,
                                           price_controller.text,
                                           event_id,
-                                        imgURL: url_acctual
-                                      );
+                                          imgURL: url_acctual);
 
                                       Navigator.pop(context);
                                     },
                                     child: Text("Add Gift")),
-
                               ],
                             ),
                           ),

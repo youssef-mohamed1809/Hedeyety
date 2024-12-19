@@ -66,7 +66,10 @@ class SynchronizationAndListeners{
     var data = snapshot.value;
     print(data.entries);
     for(var event in data.keys){
-      var gifts = data[event]['gifts'];
+      var gifts = data[event]['gifts']??null;
+      if(gifts == null){
+        continue;
+      }
       for(var gift in gifts.keys){
         ref = db.ref("/users/${user.uid}/events/eventN${data[event]['id'].toString()}/gifts/$gift");
         var gid = data[event]['gifts'][gift]['id'];
