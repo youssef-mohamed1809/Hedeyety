@@ -114,7 +114,6 @@ class Event{
     try{
       var snapshot = await ref.get();
       var events = snapshot.value;
-      // print("Events: $events with id: $id");
       if(events == null){
         return 0;
       }else{
@@ -128,7 +127,6 @@ class Event{
         var date = '$year-$month-$day';
         DateTime d = DateTime.parse(date);
 
-        // DateTime d = DateTime.parse(events[key]['date']);
         if(d.compareTo(DateTime.now()) >= 0){
           count++;
         }
@@ -186,9 +184,7 @@ class Event{
     gifts_obj = gifts_obj[0];
     var events_gifts_maps = [];
     try{
-      print("EL GIFTS: $gifts_obj");
       gifts_obj.forEach((gift){
-        print("EL GIFT: $gift");
         events_gifts_maps.add(gift.toMap());
       });
     }catch(e){

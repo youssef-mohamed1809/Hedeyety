@@ -56,15 +56,14 @@ class _EditGiftPageState extends State<EditGiftPage> {
                 children: [
                   CircleAvatar(radius: 70, backgroundImage: (widget.newImageSelected)?FileImage(File(widget.localImgPath as String)):(widget.gift.imgURL == null || widget.gift.imgURL == "")?null:NetworkImage(widget.gift.imgURL as String),),
                   Container(
-                    width: 140, // Twice the radius (2 * 70)
-                    height: 140, // Twice the radius (2 * 70)
+                    width: 140,
+                    height: 140,
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4), // Transparent black color
+                      color: Colors.black.withOpacity(0.4),
                       shape: BoxShape.circle,
                     ),
                   ),
                   IconButton(onPressed: () async {
-                    print("SUIII");
                     final picker = ImagePicker();
 
                     XFile? image;
@@ -94,7 +93,6 @@ class _EditGiftPageState extends State<EditGiftPage> {
                                   onTap: () async {
                                     image = await picker.pickImage(
                                         source: ImageSource.gallery);
-                                    // print("EL PATHHHH:   ${image!.path}");
                                     if(image != null){
                                       widget.newImageSelected = true;
                                       widget.localImgPath = image!.path;

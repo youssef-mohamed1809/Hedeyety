@@ -100,7 +100,6 @@ class _GiftsPageState extends State<GiftsPage> {
                 builder: (BuildContext, snapshot) {
                   if (snapshot.hasData) {
                     List data = snapshot.data;
-// print(data);
                     if (data.isEmpty) {
                       return Center(
                         child: Text("No gifts created yet"),

@@ -35,9 +35,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
     category_names =
         categories.map((category) => category['category'] as String).toList();
 
-    print(categories);
-    print("---");
-    print(category_names);
+
 
     var res = await Event.getUpcomingEventNames();
     events = res;
@@ -45,7 +43,6 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
     res.forEach((event) {
       eventNames.add(event['name']);
     });
-    // print(eventNames);
 
     return eventNames;
   }
@@ -167,7 +164,6 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                     setState(() {
                                       widget.selected_value = value as String?;
                                     });
-                                    // print(selected_value);
                                   },
                                 ),
                                 const SizedBox(
@@ -207,7 +203,6 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                                               source:
                                                                   ImageSource
                                                                       .gallery);
-                                                      // print("EL PATHHHH:   ${image!.path}");
                                                       widget.image_path = image!.path;
                                                       Navigator.pop(context);
                                                       },
@@ -218,10 +213,8 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                             );
                                           });
 
-                                      print("SUIII: ${image!.path}");
                                       if (image != null) {
                                         widget.image_message = "Image Selected";
-                                        print(image!.path);
 
                                       } else {
                                         widget.image_message =
@@ -255,7 +248,6 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                               widget.image_path as String);
                                         }
 
-                                        // print(event_id);
                                         Gift.createGift(
                                             -1,
                                             name_controller.text,

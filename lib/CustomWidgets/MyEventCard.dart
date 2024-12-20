@@ -41,8 +41,7 @@ class _MyEventCardState extends State<MyEventCard> {
                       children: [
                         ElevatedButton(
                             onPressed: () async {
-                              // widget.event.name = "ello";
-                              // await widget.event.updateEvent();
+
                               Navigator.push(context, MaterialPageRoute(builder: (context) => EditEventPage(event: widget.event)));
                             }, child: const Text("Edit")),
                         const SizedBox(width: 10),

@@ -9,20 +9,18 @@ class ImageHandler{
 
 
       final request = MultipartRequest('POST', uri)
-        ..fields['upload_preset'] = "ml_default" // Upload preset
+        ..fields['upload_preset'] = "ml_default"
         ..files.add(await MultipartFile.fromPath('file', path));
 
 
       final response = await request.send();
 
       if (response.statusCode == 200) {
-        print('Image uploaded successfully!');
-        // If you want to get the response, you can read the response body as follows:
         final responseData = await response.stream.bytesToString();
         final data = json.decode(responseData);
-        print('Uploaded image URL: ${data['secure_url']}');
         return data['secure_url'];
       } else {
+        print("Error from uploadImage");
         print('Failed to upload image: ${response.statusCode}');
         return null;
       }

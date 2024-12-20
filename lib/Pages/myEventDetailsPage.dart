@@ -77,7 +77,7 @@ class EventDetailsPage extends StatelessWidget {
                     }
                   }),
 
-              // ElevatedButton(onPressed:(){Navigator.pushNamed(context, '/create_gift')}, child: Text("Add Gift"))
+
             ],
           ),
         ),
@@ -86,11 +86,3 @@ class EventDetailsPage extends StatelessWidget {
   }
 }
 
-// Column(
-// children: [
-// GiftCard(pledged: false,),
-// GiftCard(pledged: true,),
-// GiftCard(pledged: false,),
-// GiftCard(pledged: true,)
-// ],
-// ),

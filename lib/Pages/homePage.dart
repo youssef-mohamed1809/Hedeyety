@@ -15,14 +15,10 @@ class HomePage extends StatelessWidget {
   Future getFriendsAndEvents() async {
     user = await CurrentUser.getCurrentUser();
     friends = (await user?.getMyFriendsIDs())!;
-    print("HENA 1");
     List<Map> friendsAndUpcomingEvents = [];
-    print("HENA 2");
     for (String friend in friends) {
       int num_of_events = await Event.getNumberOfUpcomingEvents(friend);
-      print("HENA 3");
       String name = await UserModel.getNameByID(friend);
-      print("HEA 4");
       friendsAndUpcomingEvents
           .add({'name': name, 'upcoming_events': num_of_events, 'id': friend});
       myFriends.add(name);

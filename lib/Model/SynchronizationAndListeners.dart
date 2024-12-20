@@ -60,7 +60,6 @@ class SynchronizationAndListeners {
     UserModel user = await CurrentUser.getCurrentUser();
 
     var ref = db.ref('/users/${user.uid}/friends');
-    print("HOONNAAA 1");
 
     DataSnapshot friends_snapshot = await ref.get();
 
@@ -72,7 +71,6 @@ class SynchronizationAndListeners {
     }
     StreamSubscription sub = ref.onChildAdded.listen((event) async {
       if (!CurrentUser.friends.contains(event.snapshot.key)) {
-        print("A friend has added you");
         await showNotification("You have a new Friend!");
       }
     });
@@ -85,7 +83,6 @@ class SynchronizationAndListeners {
     if (data == null) {
       return;
     }
-    // print(data.entries);
     for (var event in data.keys) {
       var gifts = data[event]['gifts'] ?? null;
       if (gifts == null) {
@@ -95,7 +92,6 @@ class SynchronizationAndListeners {
         ref = db.ref(
             "/users/${user.uid}/events/eventN${data[event]['id'].toString()}/gifts/$gift");
         var gid = data[event]['gifts'][gift]['id'];
-        // print("EL GID: $gid");
         StreamSubscription sub = ref.onChildChanged.listen((event) async {
           if (event.snapshot.key == "status") {
             if (event.snapshot.value == "2") {
@@ -103,7 +99,6 @@ class SynchronizationAndListeners {
             } else if (event.snapshot.value == "1") {
               await showNotification("A friend has pledged a gift");
             }
-            print("Status Changed");
             var db = await LocalDB.getInstance();
             await db.update('gifts', {"status": event.snapshot.value},
                 where: 'id = ?', whereArgs: [gid]);
@@ -118,16 +113,14 @@ class SynchronizationAndListeners {
   static listenForStatusChanges(DatabaseReference? ref, String gid) async {
     StreamSubscription sub = ref!.onChildChanged.listen((event) async {
       if (event.snapshot.key == "status") {
-        print("hi");
         if (event.snapshot.value == "2") {
           await showNotification("A friend has bought a gift!");
         } else if (event.snapshot.value == "1") {
           await showNotification("A friend has pledged a gift");
         }
 
-        print("bye");
-        print("Status Changed");
-        // print("GIDJKSKFJB<: $gid");
+
+
         var db = await LocalDB.getInstance();
         await db.update('gifts', {"status": event.snapshot.value},
             where: 'id = ?', whereArgs: [gid]);
@@ -144,7 +137,6 @@ class SynchronizationAndListeners {
   }
 
   static Future showNotification(String msg) async {
-    print("hi");
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
     var androidInitialize =
@@ -153,7 +145,6 @@ class SynchronizationAndListeners {
         InitializationSettings(android: androidInitialize);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    print("hi");
 
     var androidDetails = AndroidNotificationDetails(
       'channel_id',

@@ -39,8 +39,7 @@ class FriendSearchDelegate extends SearchDelegate<String>{
         return ListTile(
           title: Text(searchResults[index]),
           onTap: () {
-            // Handle the selected search result.
-            print("myFriends");
+
             int i = myFriends.indexOf(searchResults[index]);
             Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetailsPage(id: myFriendIDs[i])));
 
@@ -66,7 +65,6 @@ class FriendSearchDelegate extends SearchDelegate<String>{
           title: Text(suggestionList[index]),
           onTap: () {
             query = suggestionList[index];
-            // print(myFriends);
             int i = myFriends.indexOf(suggestionList[index]);
             Navigator.push(context, MaterialPageRoute(builder: (context) => FriendDetailsPage(id: myFriendIDs[i])));
             // Show the search results based on the selected suggestion.

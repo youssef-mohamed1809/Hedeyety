@@ -37,15 +37,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 children: [
                   CircleAvatar(radius: 70, backgroundImage: (widget.newImageSelected)?FileImage(File(widget.localImgPath as String)):(widget.user.photo == null || widget.user.photo == "")?null:NetworkImage(widget.user.photo as String),),
                   Container(
-                    width: 140, // Twice the radius (2 * 70)
-                    height: 140, // Twice the radius (2 * 70)
+                    width: 140,
+                    height: 140,
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4), // Transparent black color
+                      color: Colors.black.withOpacity(0.4),
                       shape: BoxShape.circle,
                     ),
                   ),
                   IconButton(onPressed: () async {
-                    print("SUIII");
                     final picker = ImagePicker();
 
                     XFile? image;
@@ -75,7 +74,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               onTap: () async {
                                 image = await picker.pickImage(
                                     source: ImageSource.gallery);
-                                // print("EL PATHHHH:   ${image!.path}");
                                 if(image != null){
                                   widget.newImageSelected = true;
                                   widget.localImgPath = image!.path;

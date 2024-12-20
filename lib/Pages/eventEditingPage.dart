@@ -14,7 +14,6 @@ class _EditEventPageState extends State<EditEventPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     name_controller = TextEditingController(text: widget.event.name);
     location_controller = TextEditingController(text: widget.event.location);

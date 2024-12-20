@@ -31,7 +31,7 @@ class MyGiftsCard extends StatelessWidget {
               height: 30,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.grey, // Loading state color
+                color: Colors.grey,
                 borderRadius: BorderRadius.circular(100),
               ),
               child: const CircularProgressIndicator(
@@ -46,7 +46,7 @@ class MyGiftsCard extends StatelessWidget {
               height: 30,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.redAccent, // Error state color
+                color: Colors.redAccent,
                 borderRadius: BorderRadius.circular(100),
               ),
               child: const Text(
@@ -70,7 +70,7 @@ class MyGiftsCard extends StatelessWidget {
           }
 
           return Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),  // Add some padding for better spacing
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Column(
               children: [
                 SizedBox(
@@ -82,7 +82,7 @@ class MyGiftsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(gift.name as String, textAlign: TextAlign.start), // Centering the text
+                          child: Text(gift.name as String, textAlign: TextAlign.start),
                         ),
                         Expanded(
                           child: Container(
@@ -95,7 +95,7 @@ class MyGiftsCard extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 statusText,
-                                style: const TextStyle(color: Colors.white), // Added color to the text
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -105,15 +105,13 @@ class MyGiftsCard extends StatelessWidget {
                             onPressed: (streamData == "1" || streamData == "2")?null:() async {
                               Navigator.push(context, MaterialPageRoute(builder: (context)=>EditGiftPage(gift: gift)));
                             },
-                            child: const Text("Edit", textAlign: TextAlign.center), // Centering the button
+                            child: const Text("Edit", textAlign: TextAlign.center),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                // (showEventName)?((event!="")?ElevatedButton(onPressed: (){}, child: Text(event))
-                //     :const Text("No Event Assigned", style: TextStyle(fontStyle: FontStyle.italic),)):const SizedBox()
               ],
             ),
           );

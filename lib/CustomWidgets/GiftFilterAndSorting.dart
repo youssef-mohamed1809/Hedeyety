@@ -56,7 +56,6 @@ class _GiftFilterandSortingState extends State<GiftFilterandSorting> {
                       selectedColor: Colors.red,
                       backgroundColor: Colors.blue,
                       onSelected: (bool selected) {
-                        print("hi");
                         if (selected) {
                           widget.selectedCategories.add(category);
                         } else {

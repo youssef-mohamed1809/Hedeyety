@@ -21,12 +21,10 @@ class PledgedGiftCard extends StatelessWidget {
             Row(
               children: [
                 TextButton(onPressed: (gift.status == "1")?(){
-                  // Change status to bought
                   gift.updateStatus("2");
                 }:null, child: Text("Mark as Bought")),
 
                 TextButton(onPressed: (gift.status == "1")?(){
-                  // Unpledge
                   gift.updateStatus("0");
                 }:null, child: Text("Unpledge")),
               ],

@@ -22,7 +22,6 @@ Future<void> _initializeNotifications() async {
 }
 
 void main() async {
-  // await _initializeNotifications();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -73,8 +72,7 @@ class AuthWrapper extends StatelessWidget {
             );
           } else if (snapshot.hasData) {
             SynchronizationAndListeners.listenForStatusChangesOfAlreadyCreatedGifts();
-            //   print("DONE");
-            // });
+
             Future.microtask(
                 () => Navigator.pushReplacementNamed(context, '/home'));
           } else {

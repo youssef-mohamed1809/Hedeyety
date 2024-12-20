@@ -11,7 +11,6 @@ import 'package:hedeyety/Model/UserModel.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MyProfilePage extends StatelessWidget {
-  // bool hasImage = true;
   MyProfilePage({super.key});
 
   @override

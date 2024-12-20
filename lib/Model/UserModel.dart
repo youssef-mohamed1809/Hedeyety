@@ -18,9 +18,9 @@ class UserModel {
     var ref = await db.ref();
 
     DatabaseEvent event = await ref
-        .child('users')  // The 'users' node in your database
-        .orderByChild('username')  // Query on 'username' field inside each userID
-        .equalTo(username)  // Check if any username matches the input
+        .child('users')
+        .orderByChild('username')
+        .equalTo(username)
         .once();
 
     return event.snapshot.value != null;
@@ -28,7 +28,6 @@ class UserModel {
 
   static Future<UserModel?> getCurrentUserData() async {
     String uid = getCurrentUserUID();
-    // print(uid);
     var db = RealTimeDatabase.getInstance();
     var ref = db.ref();
     final snapshot = await ref.child('users/$uid').get();
@@ -117,7 +116,6 @@ class UserModel {
     try {
       var snapshot = await ref.get();
       Map friend = snapshot.value as Map;
-      // print(friend['name']);
       var myUser = UserModel(
           uid: id,
           created_at: null,
@@ -127,7 +125,6 @@ class UserModel {
           name: friend['name']
       );
 
-      // print(myUser);
       return myUser;
     } catch (e) {
       print(e);
@@ -144,12 +141,10 @@ class UserModel {
     }
 
     var status = await _add_a_friend(uid, friend_id);
-    // print("status1: $status");
     if (!status) {
       return status;
     }
     status = await _add_a_friend(friend_id, uid);
-    // print("Status2: $status");
     return status;
   }
   Future<bool> _add_a_friend(user_id, friend_id) async {
@@ -199,17 +194,9 @@ class UserModel {
     }
   }
 
-  // static updateProfilePIcture(imgPath) async {
-  //   var userID = await UserModel.getCurrentUserUID();
-  //   var db = RealTimeDatabase.getInstance();
-  //   var ref = db.ref().child("/users/$userID/");
-  //   ref.update({
-  //     'profilePicture': imgPath
-  //   });
-  // }
+
 
   updateUserProfile(){
-    // var userID = await UserModel.getCurrentUserUID();
     var db = RealTimeDatabase.getInstance();
     var ref = db.ref().child("/users/$uid/");
     ref.update({

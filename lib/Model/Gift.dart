@@ -51,7 +51,6 @@ class Gift{
       );
 
       var res = await db.rawQuery("select published from events where id = ${event_id}");
-      print(res);
       if(res[0]["published"] == 1){
         var userID = await UserModel.getCurrentUserUID();
         db = await RealTimeDatabase.getInstance();
@@ -132,7 +131,6 @@ class Gift{
     try{
       var snapshot = await ref.get();
       Map data = snapshot.value;
-      // print(data);
       List<Gift> gifts = [];
       for(var giftKey in data.keys){
         gifts.add(Gift(
@@ -145,7 +143,6 @@ class Gift{
         ));
       }
       return gifts;
-      // print(data);
     }catch(e){
       print("From getFriendsGifts");
       print(e);
@@ -166,7 +163,6 @@ class Gift{
 
       UserModel user  = await CurrentUser.getCurrentUser();
       ref = db.ref().child("users/${user.uid}/pledgedGifts/$pledgedGiftId");
-      // print(giftOwnerID);
       await ref.set({
         'id': id,
         'name': name,
@@ -199,7 +195,6 @@ class Gift{
       );
 
       var res = await db.rawQuery("select event_id from gifts where id = ${id}");
-      print(res);
       var event_id = res[0]["event_id"];
       res = await db.rawQuery("select published from events where id = ${event_id}");
 
@@ -226,7 +221,6 @@ class Gift{
     );
 
     var res = await db.rawQuery("select event_id from gifts where id = ${id}");
-    print(res);
     var event_id = res[0]["event_id"];
     res = await db.rawQuery("select published from events where id = ${event_id}");
 
@@ -242,11 +236,7 @@ class Gift{
   static getGiftCategories() async {
     var db = await LocalDB.getInstance();
     var res = await db.rawQuery("select * from category");
-    // var cats = [];
-    // res.forEach((cat){
-    //   cats.add(cat['category']);
-    // });
-    print(res);
+
     return res;
   }
 
@@ -273,7 +263,6 @@ class Gift{
   static getEventID(Gift gift) async {
     var db = await LocalDB.getInstance();
     var res = await db.rawQuery("select event_id from gifts where id = ${gift.id}");
-    // print(res);
     return res[0]['event_id'];
   }
 
