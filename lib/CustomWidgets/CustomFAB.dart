@@ -11,6 +11,7 @@ class CustomFAB extends StatefulWidget {
 
 class _CustomFABState extends State<CustomFAB> {
   TextEditingController friend_username = TextEditingController();
+  GlobalKey<FormState> _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -25,33 +26,42 @@ class _CustomFABState extends State<CustomFAB> {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text("Add Friend"),
-                      content: TextField(
-                        controller: friend_username,
-                        decoration: const InputDecoration(hintText: "username"),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () async {
-                            var user =
-                                await CurrentUser.getCurrentUser();
-                            var friend_added = await user.add_friend(friend_username.text);
-                            // // print("FRIEND ADDED: $friend_added");
-                            Navigator.pop(context);
-                            if (friend_added == true) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content:
-                                          Text("Friend Added Successfuly")));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Friend not found")));
+                    return Form(
+                      key: _key,
+                      child: AlertDialog(
+                        title: const Text("Add Friend"),
+                        content: TextFormField(
+                          controller: friend_username,
+                          decoration: const InputDecoration(hintText: "username"),
+                          validator: (friend_username){
+                            if(friend_username!.isEmpty){
+                              return "Please enter your friend's username";
                             }
                           },
-                          child: const Text("Add Friend"),
-                        )
-                      ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () async {
+                              if(_key.currentState!.validate()){
+                                var user =
+                                await CurrentUser.getCurrentUser();
+                                var friend_added = await user.add_friend(friend_username.text);
+                                Navigator.pop(context);
+                                if (friend_added == true) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                          Text("Friend Added Successfuly")));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Friend not found")));
+                                }
+                              }
+                            },
+                            child: const Text("Add Friend"),
+                          )
+                        ],
+                      ),
                     );
                   });
             }),

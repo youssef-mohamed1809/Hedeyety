@@ -112,7 +112,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 borderRadius: BorderRadius.circular(30))
                         ),
                       validator: (name){
-
+                          if(name!.isEmpty){
+                            return "Name must not be empty";
+                          }
                       },
                     ),
                     SizedBox(height: 20,),
@@ -124,7 +126,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               borderRadius: BorderRadius.circular(30))
                       ),
                       validator: (username){
-
+                        if(username!.isEmpty){
+                          return "Name must not be empty";
+                        }
                       },
                     ),
                   ],
@@ -145,6 +149,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     widget.user.name = name_controller.text;
                     widget.user.updateUserProfile();
                     Navigator.pop(context);
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Username already exists, please enter a unique username")));
                   }
                 }
               }, child: Text("Update Profile"))

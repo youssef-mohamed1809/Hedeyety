@@ -58,6 +58,11 @@ class _EditEventPageState extends State<EditEventPage> {
                           hintText: "name",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30))),
+                      validator: (name){
+                        if (name!.isEmpty) {
+                          return "Name must not be empty";
+                        }
+                      },
                     ),
                     const SizedBox(height: 20,),
                     TextFormField(
@@ -65,7 +70,13 @@ class _EditEventPageState extends State<EditEventPage> {
                         decoration: InputDecoration(
                             hintText: "location",
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30)))),
+                                borderRadius: BorderRadius.circular(30))),
+                      validator: (location) {
+                        if (location!.isEmpty) {
+                          return "Location must not be empty";
+                        }
+                      },
+                    ),
                     const SizedBox(height: 20,),
                     TextFormField(
                       controller: description_controller,
@@ -73,6 +84,11 @@ class _EditEventPageState extends State<EditEventPage> {
                           hintText: "description",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30))),
+                      validator: (description) {
+                        if(description!.isEmpty){
+                          return "Description must not be empty";
+                        }
+                      },
                     ),
                     const SizedBox(height: 20,),
                     SizedBox(
@@ -92,6 +108,12 @@ class _EditEventPageState extends State<EditEventPage> {
                     ),
                     const SizedBox(height: 40,),
                     ElevatedButton(onPressed: () async {
+                      if(event_date == null){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Please choose a date")));
+                        return;
+                      }
+
                       if(key.currentState!.validate() && event_date != null){
                           widget.event.name = name_controller.text;
                           widget.event.location = location_controller.text;

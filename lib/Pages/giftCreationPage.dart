@@ -20,7 +20,7 @@ class CreateGiftPage extends StatefulWidget {
 }
 
 class _CreateGiftPageState extends State<CreateGiftPage> {
-  GlobalKey<FormState> key = GlobalKey();
+  GlobalKey<FormState> _key = GlobalKey();
 
   List events = [];
   var categories = [];
@@ -74,6 +74,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                       if (!data.isEmpty) {
                         return Center(
                           child: Form(
+                            key: _key,
                             child: Column(
                               children: [
                                 TextFormField(
@@ -84,6 +85,11 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(30))),
+                                  validator: (name){
+                                    if(name!.isEmpty){
+                                      return "Name must not be empty";
+                                    }
+                                  },
                                 ),
                                 const SizedBox(
                                   height: 20,
@@ -97,6 +103,11 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(30))),
+                                  validator: (price){
+                                    if(price!.isEmpty){
+                                      return "Price must not be empty";
+                                    }
+                                  },
                                 ),
                                 const SizedBox(
                                   height: 20,
@@ -109,6 +120,11 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(30))),
+                                  validator: (description){
+                                    if(description!.isEmpty){
+                                      return "Description must not be empty";
+                                    }
+                                  },
                                 ),
                                 DropdownButton(
                                   key: Key("GiftCategoryDropDownButton"),
@@ -224,31 +240,34 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                 ElevatedButton(
                                     key: Key("CreateGiftButton"),
                                     onPressed: () async {
-                                      var event_id = -1;
-                                      for (int i = 0; i < events.length; i++) {
-                                        if (events[i]['name'] ==
-                                            widget.selected_value) {
-                                          event_id = events[i]['id'];
+                                      if(_key.currentState!.validate()){
+                                        var event_id = -1;
+                                        for (int i = 0; i < events.length; i++) {
+                                          if (events[i]['name'] ==
+                                              widget.selected_value) {
+                                            event_id = events[i]['id'];
+                                          }
                                         }
-                                      }
-                                      String? url_acctual;
-                                      if(widget.image_path != null){
-                                        url_acctual =
-                                        await ImageHandler.uploadImage(
-                                            widget.image_path as String);
+                                        String? url_acctual;
+                                        if(widget.image_path != null){
+                                          url_acctual =
+                                          await ImageHandler.uploadImage(
+                                              widget.image_path as String);
+                                        }
+
+                                        // print(event_id);
+                                        Gift.createGift(
+                                            -1,
+                                            name_controller.text,
+                                            description_controller.text,
+                                            widget.selected_category_id,
+                                            price_controller.text,
+                                            event_id,
+                                            imgURL: url_acctual??"");
+
+                                        Navigator.pop(context);
                                       }
 
-                                      // print(event_id);
-                                      Gift.createGift(
-                                          -1,
-                                          name_controller.text,
-                                          description_controller.text,
-                                          widget.selected_category_id,
-                                          price_controller.text,
-                                          event_id,
-                                          imgURL: url_acctual??"");
-
-                                      Navigator.pop(context);
                                     },
                                     child: Text("Add Gift")),
                               ],

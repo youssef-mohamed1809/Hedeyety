@@ -18,7 +18,7 @@ class NavBar extends StatelessWidget {
       onTap: (value) {
         // Respond to item press.
         if(value == 0){
-          Navigator.pushReplacementNamed(context, "/");
+          Navigator.pushReplacementNamed(context, "/home");
         }else if(value == 1){
           Navigator.pushReplacementNamed(context, "/myevents");
         }else if(value == 2){

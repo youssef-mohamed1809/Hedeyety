@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/Model/Gift.dart';
@@ -26,13 +28,13 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
           child:
               Column(
                 children: [
-                  (widget.gift.imgURL != null && widget.gift.imgURL != "")?SizedBox(height: 300, width:300,child: Image.network(widget.gift.imgURL as String)):Text(""),
+                  CircleAvatar(radius: 70, backgroundImage: (widget.gift.imgURL != null && widget.gift.imgURL != null)?NetworkImage(widget.gift.imgURL as String):null),
                   SizedBox(height: 20,),
                   Text(widget.gift.name as String, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
                   Text("Price: ${widget.gift.price as String}"),
                   SizedBox(height: 20),
                   Text(widget.gift.description as String, style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17)),
-                ],
+                  ],
               ),
         ),
       ),

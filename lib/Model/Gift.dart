@@ -212,6 +212,7 @@ class Gift{
               "description": description,
               "name": name,
               "price": price,
+              "imgURL": imgURL
             });
       }
   }
