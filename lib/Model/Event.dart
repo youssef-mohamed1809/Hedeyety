@@ -120,7 +120,15 @@ class Event{
       }else{
       int count = 0;
       for(final key in events.keys){
-        DateTime d = DateTime.parse(events[key]['date']);
+
+        List<String> parts = events[key]['date'].split('-');
+        String year = parts[0];
+        String month = parts[1].padLeft(2, '0');
+        String day = parts[2].padLeft(2, '0');
+        var date = '$year-$month-$day';
+        DateTime d = DateTime.parse(date);
+
+        // DateTime d = DateTime.parse(events[key]['date']);
         if(d.compareTo(DateTime.now()) >= 0){
           count++;
         }
@@ -147,10 +155,17 @@ class Event{
         return [];
       }
       for(var event_num in data.keys){
+        List<String> parts = data[event_num]['date'].split('-');
+        String year = parts[0];
+        String month = parts[1].padLeft(2, '0');
+        String day = parts[2].padLeft(2, '0');
+        var date = '$year-$month-$day';
+        DateTime d = DateTime.parse(date);
+
         events.add(Event(
             id: data[event_num]['id'],
             name: data[event_num]['name'],
-            date: DateTime.parse(data[event_num]['date']),
+            date: d,
             location: data[event_num]['location'],
             description: data[event_num]['description'],
             published: 1

@@ -33,11 +33,15 @@ class _GiftsPageState extends State<GiftsPage> {
     widget.category_names = widget.categories
         .map((category) => category['category'] as String)
         .toList();
-    widget.event_ids = gifts_and_eventIDs[1];
-    widget.gifts = gifts_and_eventIDs[0];
-    var id = await Gift.getEventID(widget.gifts[0]);
-    print("${id}");
-    return gifts_and_eventIDs[0];
+
+    if(gifts_and_eventIDs.length == 2){
+      widget.event_ids = gifts_and_eventIDs[1];
+      widget.gifts = gifts_and_eventIDs[0];
+      return gifts_and_eventIDs[0];
+    }else{
+      widget.event_ids = gifts_and_eventIDs[0];
+      return [];
+    }
   }
 
   @override
@@ -96,7 +100,7 @@ class _GiftsPageState extends State<GiftsPage> {
                 builder: (BuildContext, snapshot) {
                   if (snapshot.hasData) {
                     List data = snapshot.data;
-
+// print(data);
                     if (data.isEmpty) {
                       return Center(
                         child: Text("No gifts created yet"),
@@ -116,7 +120,7 @@ class _GiftsPageState extends State<GiftsPage> {
                   } else if (snapshot.hasError) {
                     print(snapshot.error);
                     return Center(
-                      child: Text("An erro has occurred"),
+                      child: Text("An error has occurred"),
                     );
                   } else {
                     return Center(

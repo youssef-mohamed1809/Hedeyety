@@ -25,17 +25,28 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
         padding: const EdgeInsets.all(12),
         child: SizedBox(
           width: double.infinity,
-          child:
-              Column(
-                children: [
-                  CircleAvatar(radius: 70, backgroundImage: (widget.gift.imgURL != null && widget.gift.imgURL != null)?NetworkImage(widget.gift.imgURL as String):null),
-                  SizedBox(height: 20,),
-                  Text(widget.gift.name as String, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                  Text("Price: ${widget.gift.price as String}"),
-                  SizedBox(height: 20),
-                  Text(widget.gift.description as String, style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17)),
-                  ],
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 70,
+                backgroundImage: (widget.gift.imgURL != null &&
+                        widget.gift.imgURL!.isNotEmpty)
+                    ? NetworkImage(widget.gift.imgURL!)
+                    : null,
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                widget.gift.name as String,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              Text("Price: ${widget.gift.price as String}"),
+              SizedBox(height: 20),
+              Text(widget.gift.description as String,
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 17)),
+            ],
+          ),
         ),
       ),
     );

@@ -59,7 +59,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
-              Text("Add a new Gift", style: TextStyle(fontSize: 30)),
+              Text("Add a New Gift", style: TextStyle(fontSize: 30)),
               SizedBox(
                 height: 40,
               ),

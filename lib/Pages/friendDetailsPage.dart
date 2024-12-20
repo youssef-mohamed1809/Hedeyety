@@ -54,10 +54,14 @@ class FriendDetailsPage extends StatelessWidget {
                     if (status!) {
                       return Column(
                         children: [
+                          SizedBox(height: 40,),
+                          CircleAvatar(radius: 70, backgroundImage: (friend.photo != null && friend.photo != null)?NetworkImage(friend.photo as String):null),
+                          SizedBox(height: 20,),
                           Text(
                             "${friend.name}",
                             style: TextStyle(fontSize: 35),
                           ),
+
                           Text("@${friend.username}",style: TextStyle(fontSize: 15)),
                           Divider(),
                           Text(

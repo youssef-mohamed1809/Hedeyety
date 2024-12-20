@@ -57,26 +57,29 @@ class _UserDetailsState extends State<UserDetails> {
               children: [
                 Stack(children: [CircleAvatar(radius: 70, backgroundImage: (data.photo == null || data.photo == "")?null:NetworkImage(data.photo as String),)]),
                 SizedBox(height: 30),
-                Text(data.name as String),
+                Text(data.name as String, style: TextStyle(fontSize: 30),),
+                Text("@${data.username as String}", style: TextStyle(fontSize: 20),),
                 Divider(),
-                TextButton(onPressed: () {
+                SizedBox(height: 25,),
+                ElevatedButton(onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage(user: data)));
-                }, child: Text("Edit Profile")),
-                TextButton(onPressed: () {}, child: Text("Events")),
-                TextButton(
+                }, child: Text("Edit Profile", style: TextStyle(fontSize: 25))),
+                SizedBox(height: 50,),
+                ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => PledgedGiftsPage()));
                     },
-                    child: Text("Pledged Gifts")),
-                TextButton(
+                    child: Text("Pledged Gifts", style: TextStyle(fontSize: 25),)),
+                SizedBox(height: 50,),
+                ElevatedButton(
                     onPressed: () async {
                       await Authentication.logout();
                       Navigator.pushReplacementNamed(context, '/login');
                     },
-                    child: Text("Log out"))
+                    child: Text("Log out", style: TextStyle(fontSize: 25)))
               ],
             );
           } else if (snapshot.hasError) {
