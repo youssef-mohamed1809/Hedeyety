@@ -5,12 +5,13 @@ import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/BottomNavBar.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
 import 'package:hedeyety/Model/ImageHandler.dart';
+import 'package:hedeyety/Pages/editProfilePage.dart';
 import 'package:hedeyety/Pages/pledgedGiftsPage.dart';
 import 'package:hedeyety/Model/UserModel.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MyProfilePage extends StatelessWidget {
-  bool hasImage = true;
+  // bool hasImage = true;
   MyProfilePage({super.key});
 
   @override
@@ -41,7 +42,6 @@ class UserDetails extends StatefulWidget {
 
 class _UserDetailsState extends State<UserDetails> {
   Future loadUserData() async {
-    // await UserModel.get_id_by_username();
     return await CurrentUser.getCurrentUser();
   }
 
@@ -55,61 +55,13 @@ class _UserDetailsState extends State<UserDetails> {
 
             return Column(
               children: [
-                (data.photo == null || data.photo == "")
-                    ? CircleAvatar(
-                        radius: 70,
-                        child: IconButton(
-                            onPressed: () async {
-                              // upload photo
-                              final picker = ImagePicker();
-
-                              XFile? image;
-                              await showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return SafeArea(
-                                      child: Wrap(
-                                        children: [
-                                          ListTile(
-                                            title: Text("Camera"),
-                                            leading: Icon(Icons.camera_alt),
-                                            onTap: () async {
-                                              image = await picker.pickImage(
-                                                  source: ImageSource.camera);
-                                              widget.imgURL = image!.path;
-                                            },
-                                          ),
-                                          ListTile(
-                                            title: Text("Gallery"),
-                                            leading: Icon(Icons.photo),
-                                            onTap: () async {
-                                              image = await picker.pickImage(
-                                                  source: ImageSource.gallery);
-                                              // print("EL PATHHHH:   ${image!.path}");
-                                              widget.imgURL = image!.path;
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  });
-
-                              if (image != null) {
-                                String? url_acctual =
-                                    await ImageHandler.uploadImage(
-                                        widget.imgURL as String);
-                                UserModel.updateProfilePIcture(
-                                    url_acctual as String);
-                                CurrentUser.user = null;
-                              }
-                            },
-                            icon: Icon(Icons.camera_alt_outlined)),
-                      )
-                    : CircleAvatar(radius: 70, child: Image.network(data!.photo as String),),
+                Stack(children: [CircleAvatar(radius: 70, backgroundImage: (data.photo == null || data.photo == "")?null:NetworkImage(data.photo as String),)]),
                 SizedBox(height: 30),
                 Text(data.name as String),
                 Divider(),
-                TextButton(onPressed: () {}, child: Text("Edit Profile")),
+                TextButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage(user: data)));
+                }, child: Text("Edit Profile")),
                 TextButton(onPressed: () {}, child: Text("Events")),
                 TextButton(
                     onPressed: () {

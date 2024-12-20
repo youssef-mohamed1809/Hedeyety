@@ -23,10 +23,18 @@ class SynchronizationAndListeners {
     var data = snapshot.value as Map;
     for (var entry in data.entries) {
       var eventDetails = entry.value;
+
+      List<String> parts = eventDetails['date'].split('-');
+      String year = parts[0];
+      String month = parts[1].padLeft(2, '0');
+      String day = parts[2].padLeft(2, '0');
+      var date = '$year-$month-$day';
+      DateTime d = DateTime.parse(date);
+
       await Event.createEvent(
         eventDetails['id'],
         eventDetails['name'],
-        DateTime.parse(eventDetails['date']),
+        d,
         eventDetails['location'],
         eventDetails['description'],
       );

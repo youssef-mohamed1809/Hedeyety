@@ -199,12 +199,23 @@ class UserModel {
     }
   }
 
-  static updateProfilePIcture(imgPath) async {
-    var userID = await UserModel.getCurrentUserUID();
+  // static updateProfilePIcture(imgPath) async {
+  //   var userID = await UserModel.getCurrentUserUID();
+  //   var db = RealTimeDatabase.getInstance();
+  //   var ref = db.ref().child("/users/$userID/");
+  //   ref.update({
+  //     'profilePicture': imgPath
+  //   });
+  // }
+
+  updateUserProfile(){
+    // var userID = await UserModel.getCurrentUserUID();
     var db = RealTimeDatabase.getInstance();
-    var ref = db.ref().child("/users/$userID/");
+    var ref = db.ref().child("/users/$uid/");
     ref.update({
-      'profilePicture': imgPath
+      "name": name,
+      "username": username,
+      "profilePicture": photo
     });
   }
 

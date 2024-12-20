@@ -44,6 +44,8 @@ class _EditGiftPageState extends State<EditGiftPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+
         appBar: CustomAppBar(button: IconButton(onPressed: () async {
           await widget.gift.deleteGift();
           Navigator.pop(context);
