@@ -120,7 +120,7 @@ class UserModel {
           uid: id,
           created_at: null,
           email: friend['email'],
-          photo: null,
+          photo: friend['profilePicture'],
           username: friend['username'],
           name: friend['name']
       );

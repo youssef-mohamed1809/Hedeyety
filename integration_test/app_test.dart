@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:hedeyety/main.dart' as app;
 
-Future init_stuff()async{
+Future init()async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 }
@@ -21,8 +21,8 @@ void main() {
 
 
 
-  testWidgets('Test test', (tester) async {
-    await init_stuff();
+  testWidgets('Normal Case Scenario login, create event, and create gift', (tester) async {
+    await init();
 
     app.main();
     await tester.pumpAndSettle();
@@ -51,7 +51,7 @@ void main() {
     await tester.tap(profileButton);
     await tester.pumpAndSettle(Duration(seconds: 2));
 
-    expect(find.text("Youssef"), findsAny);
+    expect(find.text("Youssef Mohamed"), findsAny);
 
     /* Create Event Testing */
     await tester.tap(fab);

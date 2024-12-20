@@ -40,9 +40,12 @@ class FriendsEventDetailsPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                "${event.description}",
-                style: const TextStyle(fontSize: 15),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "${event.description}",
+                  style: const TextStyle(fontSize: 15),
+                ),
               ),
               const Divider(),
               const SizedBox(

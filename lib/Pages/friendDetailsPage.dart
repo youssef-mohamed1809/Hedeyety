@@ -55,7 +55,7 @@ class FriendDetailsPage extends StatelessWidget {
                       return Column(
                         children: [
                           SizedBox(height: 40,),
-                          CircleAvatar(radius: 70, backgroundImage: (friend.photo != null && friend.photo != null)?NetworkImage(friend.photo as String):null),
+                          CircleAvatar(radius: 70, backgroundImage: (friend.photo != null && friend.photo != "")?NetworkImage(friend.photo as String):null),
                           SizedBox(height: 20,),
                           Text(
                             "${friend.name}",

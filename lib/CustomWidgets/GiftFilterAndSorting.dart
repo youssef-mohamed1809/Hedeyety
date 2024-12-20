@@ -26,13 +26,15 @@ class _GiftFilterandSortingState extends State<GiftFilterandSorting> {
       child: Column(
         children: [
           Text("Sort"),
-          Expanded(
-            child: Wrap(
+
+             Wrap(
               spacing: 15,
               children: widget.sortingOptions.map((option) {
                 final isSelected = (option == widget.selectedSortOption);
                 return ChoiceChip(
-                  label: Text(option),
+                  label: Text(option, style: TextStyle(color: Colors.white),),
+                  selectedColor: Colors.deepPurple,
+                  backgroundColor: Colors.grey,
                   selected: isSelected,
                   onSelected: (bool selected) {
                     setState(() {
@@ -42,7 +44,7 @@ class _GiftFilterandSortingState extends State<GiftFilterandSorting> {
                 );
               }).toList(),
             ),
-          ),
+
           Divider(),
           Text("Filter"),
           Expanded(
@@ -51,10 +53,10 @@ class _GiftFilterandSortingState extends State<GiftFilterandSorting> {
                 children: widget.category_names.map((category) {
                   final isSelected = widget.selectedCategories.contains(category);
                   return FilterChip(
-                      label: Text(category),
+                      label: Text(category, style: TextStyle(color: Colors.white),),
                       selected: isSelected,
-                      selectedColor: Colors.red,
-                      backgroundColor: Colors.blue,
+                      selectedColor: Colors.deepPurple,
+                      backgroundColor: Colors.grey,
                       onSelected: (bool selected) {
                         if (selected) {
                           widget.selectedCategories.add(category);

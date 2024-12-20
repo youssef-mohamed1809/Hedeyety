@@ -16,6 +16,7 @@ class MyProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(button: null),
       body: Padding(
         padding: const EdgeInsets.all(0),
