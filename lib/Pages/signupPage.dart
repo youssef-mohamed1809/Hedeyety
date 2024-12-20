@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedeyety/Model/Authentication.dart';
 import 'package:hedeyety/CustomWidgets/CustomAppBar.dart';
+import 'package:hedeyety/Model/UserModel.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -123,18 +124,25 @@ class _SignUpPageState extends State<SignUpPage> {
                     ElevatedButton(
                         onPressed: () async {
                           if (_key.currentState!.validate()) {
-                            var res = await Authentication.signup(
-                                name_controller.text,
-                                username_controller.text,
-                                email_controller.text,
-                                password_controller.text);
-                            if (res == true) {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  '/home', (Route<dynamic> route) => false);
-                            } else {
+                            bool username_exists = await UserModel.usernameExists(username_controller.text);
+                            if(!username_exists){
+                              var res = await Authentication.signup(
+                                  name_controller.text,
+                                  username_controller.text,
+                                  email_controller.text,
+                                  password_controller.text);
+                              if (res == true) {
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    '/home', (Route<dynamic> route) => false);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(res as String)));
+                              }
+                            }else{
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(res as String)));
+                                  SnackBar(content: Text("Username already exists, please enter a unique username")));
                             }
+
                           }
                         },
                         child: const Text("Sign up"))

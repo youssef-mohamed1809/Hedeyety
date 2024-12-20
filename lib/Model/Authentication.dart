@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hedeyety/CurrentUser.dart';
 import 'package:hedeyety/Model/Event.dart';
 import 'package:hedeyety/Model/LocalDB.dart';
@@ -65,13 +66,13 @@ class Authentication{
 
   static logout() async {
     CurrentUser.user = null;
+    CurrentUser.friends.clear();
     await FirebaseAuth.instance.signOut();
     String dbsPath = await getDatabasesPath();
     String dbPath = join(dbsPath, 'hedeyety.db');
     await deleteDatabase(dbPath);
     SynchronizationAndListeners.removeAllListeners();
     LocalDB.db = null;
-
   }
 
   static user_signed_in(){

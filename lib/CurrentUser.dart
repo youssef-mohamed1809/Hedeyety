@@ -2,6 +2,7 @@ import 'package:hedeyety/Model/UserModel.dart';
 
 class CurrentUser{
   static UserModel? user;
+  static List friends = [];
 
 
   static getCurrentUser() async {

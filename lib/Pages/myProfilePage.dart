@@ -122,7 +122,7 @@ class _UserDetailsState extends State<UserDetails> {
                 TextButton(
                     onPressed: () async {
                       await Authentication.logout();
-                      Navigator.pushReplacementNamed(context, '/');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     child: Text("Log out"))
               ],

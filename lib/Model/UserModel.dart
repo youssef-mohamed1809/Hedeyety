@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'RTdb.dart';
 
 class UserModel {
@@ -11,6 +12,19 @@ class UserModel {
 
 
   UserModel({this.uid, this.created_at, this.email, this.photo, this.username, this.name});
+
+  static usernameExists(username) async {
+    var db = RealTimeDatabase.getInstance();
+    var ref = await db.ref();
+
+    DatabaseEvent event = await ref
+        .child('users')  // The 'users' node in your database
+        .orderByChild('username')  // Query on 'username' field inside each userID
+        .equalTo(username)  // Check if any username matches the input
+        .once();
+
+    return event.snapshot.value != null;
+  }
 
   static Future<UserModel?> getCurrentUserData() async {
     String uid = getCurrentUserUID();

@@ -20,7 +20,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(width: 50, height: 50, child: Image.asset("Assets/Images/hedeyety_logo.png")),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(width: 50, height: 50, child: Image.asset("Assets/Images/hedeyety_logo.png")),
+          ),
           const Text("Hedeyety")
         ],
 

@@ -30,7 +30,7 @@ class NavBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           label: 'Home',
-          icon: IconButton(icon: Icon(Icons.home), onPressed: (){Navigator.pushReplacementNamed(context, "/");},),),
+          icon: IconButton(icon: Icon(Icons.home), onPressed: (){Navigator.pushReplacementNamed(context, "/home");},),),
         BottomNavigationBarItem(
           key: Key("MyEventsPageNavBarButton"),
           label: 'My Events',
