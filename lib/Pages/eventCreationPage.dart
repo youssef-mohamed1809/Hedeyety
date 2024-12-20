@@ -37,6 +37,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 child: Column(
                   children: [
                     TextFormField(
+                      key: Key("EventNameField"),
                       controller: name_controller,
                       decoration: InputDecoration(
                           hintText: "name",
@@ -45,6 +46,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     ),
                     const SizedBox(height: 20,),
                     TextFormField(
+                        key: Key("EventLocationField"),
                         controller: location_controller,
                         decoration: InputDecoration(
                             hintText: "location",
@@ -52,6 +54,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 borderRadius: BorderRadius.circular(30)))),
                     const SizedBox(height: 20,),
                     TextFormField(
+                      key: Key("EventDescriptionField"),
                       controller: description_controller,
                       decoration: InputDecoration(
                           hintText: "description",
@@ -61,7 +64,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     const SizedBox(height: 20,),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(onPressed: () async {
+                      child: ElevatedButton(
+                          key: Key("EventDatePickerButton"),
+                          onPressed: () async {
                         event_date = await showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime.now(), lastDate: DateTime(3000));
                         if(event_date != null){
                           setState(() {
@@ -75,7 +80,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         }, child: Text(button_text,)),
                     ),
                     const SizedBox(height: 40,),
-                    ElevatedButton(onPressed: (){
+                    ElevatedButton(
+                        key: Key("CreateEventButton"),
+                        onPressed: (){
                       if(key.currentState!.validate() && event_date != null){
                         Event.createEvent(-1, name_controller.text, event_date!, location_controller.text, description_controller.text);
                         setState(() {

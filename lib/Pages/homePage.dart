@@ -44,6 +44,7 @@ class HomePage extends StatelessWidget {
         body: Container(
           margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: FutureBuilder(
+            key: Key("HomeFuture"),
               future: getFriendsAndEvents(),
               builder: (BuildContext, snapshot) {
                 if (snapshot.hasData) {

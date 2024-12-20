@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     TextFormField(
+                      key: Key("Username"),
                       decoration: InputDecoration(
                         hintText: "Email",
                         border: OutlineInputBorder(
@@ -58,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     TextFormField(
+                      key: Key("Password"),
                       obscureText: passwordNotVisible,
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
@@ -85,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 40,
                     ),
                     ElevatedButton(
+                      key: Key("Login"),
                         onPressed: () async {
                           if (_key.currentState!.validate()) {
                             var res = await Authentication.login(

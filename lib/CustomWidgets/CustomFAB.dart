@@ -15,6 +15,7 @@ class _CustomFABState extends State<CustomFAB> {
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
+      key: Key("CustomFAB"),
       icon: Icons.add,
       activeIcon: Icons.close,
       children: [
@@ -55,12 +56,14 @@ class _CustomFABState extends State<CustomFAB> {
                   });
             }),
         SpeedDialChild(
+            key: Key("CreateEvent"),
             child: const Icon(Icons.event),
             onTap: () {
               Navigator.pushNamed(context, '/create_event');
               setState(() {});
             }),
         SpeedDialChild(
+          key: Key("CreateGift"),
             child: const Icon(Icons.cake),
             onTap: () {
               Navigator.pushNamed(context, '/create_gift');

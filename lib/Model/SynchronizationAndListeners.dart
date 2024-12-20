@@ -64,7 +64,10 @@ class SynchronizationAndListeners{
     ref = db.ref('/users/${user.uid}/events');
     var snapshot = await ref.get();
     var data = snapshot.value;
-    print(data.entries);
+    if(data == null){
+      return;
+    }
+    // print(data.entries);
     for(var event in data.keys){
       var gifts = data[event]['gifts']??null;
       if(gifts == null){

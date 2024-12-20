@@ -45,7 +45,7 @@ class Gift{
             'category': category,
             'status': 0,
             'event_id': event_id,
-            'imgURL': imgURL
+            'imgURL': imgURL??""
           },
           conflictAlgorithm: ConflictAlgorithm.replace
       );

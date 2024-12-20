@@ -43,9 +43,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Hedeyety',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => AuthWrapper(),
+        // '/': (context) => AuthWrapper(),
         '/home': (context) => HomePage(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),

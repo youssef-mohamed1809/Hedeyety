@@ -53,6 +53,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(button: null),
         body: Padding(
           padding: const EdgeInsets.all(30.0),
@@ -76,6 +77,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                             child: Column(
                               children: [
                                 TextFormField(
+                                  key: Key("GiftNameField"),
                                   controller: name_controller,
                                   decoration: InputDecoration(
                                       hintText: "Name",
@@ -87,6 +89,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                   height: 20,
                                 ),
                                 TextFormField(
+                                  key: Key("GiftPriceField"),
                                   controller: price_controller,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
@@ -99,6 +102,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                   height: 20,
                                 ),
                                 TextFormField(
+                                  key: Key("GiftDescriptionField"),
                                   controller: description_controller,
                                   decoration: InputDecoration(
                                       hintText: "Description",
@@ -107,6 +111,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                               BorderRadius.circular(30))),
                                 ),
                                 DropdownButton(
+                                  key: Key("GiftCategoryDropDownButton"),
                                     hint: Text("Choose a category"),
                                     value: widget.selected_category,
                                     items: category_names.map((name) {
@@ -133,6 +138,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                   height: 20,
                                 ),
                                 DropdownButton(
+                                  key: Key("GiftEventDropDownButton"),
                                   hint: Text("Select an Event"),
                                   value: widget.selected_value,
                                   items: data.map((name) {
@@ -154,11 +160,6 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                 ElevatedButton(
                                     onPressed: () async {
                                       final picker = ImagePicker();
-                                      //
-                                      // if(image != null){
-                                      //   print(image.path);
-                                      //   widget.image_path = image.path;
-                                      // }
 
                                       XFile? image;
                                       await showModalBottomSheet(
@@ -221,6 +222,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                   height: 20,
                                 ),
                                 ElevatedButton(
+                                    key: Key("CreateGiftButton"),
                                     onPressed: () async {
                                       var event_id = -1;
                                       for (int i = 0; i < events.length; i++) {
@@ -229,10 +231,12 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                           event_id = events[i]['id'];
                                         }
                                       }
-
-                                      String? url_acctual =
-                                          await ImageHandler.uploadImage(
-                                              widget.image_path as String);
+                                      String? url_acctual;
+                                      if(widget.image_path != null){
+                                        url_acctual =
+                                        await ImageHandler.uploadImage(
+                                            widget.image_path as String);
+                                      }
 
                                       // print(event_id);
                                       Gift.createGift(
@@ -242,7 +246,7 @@ class _CreateGiftPageState extends State<CreateGiftPage> {
                                           widget.selected_category_id,
                                           price_controller.text,
                                           event_id,
-                                          imgURL: url_acctual);
+                                          imgURL: url_acctual??"");
 
                                       Navigator.pop(context);
                                     },

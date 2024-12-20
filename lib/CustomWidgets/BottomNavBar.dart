@@ -32,6 +32,7 @@ class NavBar extends StatelessWidget {
           label: 'Home',
           icon: IconButton(icon: Icon(Icons.home), onPressed: (){Navigator.pushReplacementNamed(context, "/");},),),
         BottomNavigationBarItem(
+          key: Key("MyEventsPageNavBarButton"),
           label: 'My Events',
           icon: IconButton(icon: Icon(Icons.calendar_month), onPressed: (){Navigator.pushReplacementNamed(context, "/myevents");},),
         ),
@@ -39,6 +40,7 @@ class NavBar extends StatelessWidget {
           label: 'Wishlist',
           icon: IconButton(icon: Icon(Icons.card_giftcard), onPressed: (){Navigator.pushReplacementNamed(context, '/mygifts');}),),
         BottomNavigationBarItem(
+          key: Key("ProfileNavBarButton"),
           label: 'Profile',
           icon: IconButton(icon: Icon(Icons.person), onPressed: (){Navigator.pushReplacementNamed(context, '/myprofile');},),
         ),
